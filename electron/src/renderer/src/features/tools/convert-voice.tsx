@@ -21,6 +21,7 @@ import { ApiError, apiPath, describeError } from '@/lib/api/client';
 import { convertSpeech, type ConvertResult } from '@/lib/api/convert';
 import { queryKeys } from '@/lib/query';
 import { beginAppActivity } from '@/lib/app-activity';
+import { TrimAudio } from '@/features/gallery/trim-audio';
 
 export function ConvertVoice() {
   const { t } = useTranslation();
@@ -39,6 +40,8 @@ export function ConvertVoice() {
   const [error, setError] = useState('');
   const [needsModel, setNeedsModel] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [trimming, setTrimming] = useState(false);
+  const [editedUrl, setEditedUrl] = useState('');
   const request = useRef<AbortController | null>(null);
   const input = useRef<HTMLInputElement>(null);
   const invalidate = () => {
@@ -46,6 +49,8 @@ export function ConvertVoice() {
     request.current = null;
     setBusy(false);
     setResult(null);
+    setTrimming(false);
+    setEditedUrl('');
     setError('');
     setNeedsModel(false);
   };
@@ -55,6 +60,10 @@ export function ConvertVoice() {
       !(next.type.startsWith('audio/') || /\.(mp3|wav|m4a|flac|ogg|aac|webm)$/i.test(next.name))
     ) {
       setError(t('clone.unsupported_audio'));
+      return;
+    }
+    if (next.size > 64 * 1024 * 1024) {
+      setError(t('convert.file_too_large'));
       return;
     }
     invalidate();
@@ -70,6 +79,7 @@ export function ConvertVoice() {
     };
   }, [file]);
   useEffect(() => () => request.current?.abort(), []);
+  useEffect(() => () => { if (editedUrl) URL.revokeObjectURL(editedUrl); }, [editedUrl]);
   // Match the backend's profile conditioning: designs use their saved sample
   // or instructions; clones need a reference (a locked take takes precedence).
   const voices = (profiles.data ?? []).filter(
@@ -86,6 +96,8 @@ export function ConvertVoice() {
     setError('');
     setNeedsModel(false);
     setResult(null);
+    setTrimming(false);
+    setEditedUrl('');
     try {
       const converted = await convertSpeech(file, voice, match, controller.signal, language);
       if (!controller.signal.aborted) {
@@ -117,7 +129,7 @@ export function ConvertVoice() {
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6">
       <div>
-        <h2 className="text-lg font-semibold">{t('convert.convert')}</h2>
+        <h2 className="text-lg font-semibold">{t('convert.workflow_title')}</h2>
         <p className="mt-1 text-sm text-muted-foreground">{t('convert.need_source_and_voice')}</p>
       </div>
       <section className="space-y-3" aria-label={t('convert.source_kicker')}>
@@ -297,18 +309,32 @@ export function ConvertVoice() {
       </div>
       {result && (
         <section className="space-y-3 border-t pt-4" aria-label={t('convert.result_kicker')}>
+          {trimming ? (
+            <TrimAudio
+              src={apiPath(result.audio_url)}
+              name={`voicestudio-${result.id}-trimmed`}
+              busy={busy}
+              onCancel={() => setTrimming(false)}
+              onSave={(file) => {
+                setEditedUrl(URL.createObjectURL(file));
+                setTrimming(false);
+              }}
+            />
+          ) : <>
           <div className="flex items-center justify-between gap-3">
             <h3 className="text-sm font-medium">{t('convert.result_kicker')}</h3>
             <SaveAudioButton
-              url={apiPath(result.audio_url)}
-              suggestedName={`voicestudio-${result.id}.wav`}
+              url={editedUrl || apiPath(result.audio_url)}
+              suggestedName={`voicestudio-${result.id}${editedUrl ? '-trimmed' : ''}.wav`}
             />
           </div>
-          <WaveformPlayer src={apiPath(result.audio_url)} source="convert-result" height={40} />
+          <WaveformPlayer src={editedUrl || apiPath(result.audio_url)} source="convert-result" height={40} />
+          <Button variant="outline" size="sm" onClick={() => setTrimming(true)}>{t('trimmer.title')}</Button>
           <p className="text-sm">
             <span className="text-muted-foreground">{t('convert.transcript')}: </span>
             {result.text}
           </p>
+          </>}
         </section>
       )}
     </div>

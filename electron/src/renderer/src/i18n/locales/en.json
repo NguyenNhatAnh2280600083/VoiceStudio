@@ -419,7 +419,7 @@
     "no_language_match": "No language matches “{{query}}”.",
     "voice_kicker": "Voice",
     "reference_audio": "Reference audio",
-    "reference_hint": "Use 5–15 seconds of clean speech.",
+    "reference_hint": "Use 5–15 seconds of clean speech. Upload up to 5 minutes; the best 15-second passage is chosen automatically. Clips over 20 seconds need an installed speech-to-text model.",
     "ref_usage_best_window": "This engine uses up to {{seconds}}s — the best passage is picked automatically.",
     "ref_usage_head": "This engine uses the first {{seconds}}s of this clip.",
     "ref_usage_long": "Longer than the recommended {{seconds}}s. The whole clip is sent to the engine.",
@@ -436,6 +436,18 @@
     "transcript_hint": "What the reference clip says. Leave empty to let the engine listen.",
     "style": "Style",
     "style_placeholder": "e.g. whisper",
+    "delivery_prompt": "Reading direction",
+    "delivery_prompt_placeholder": "e.g. Warm and steady, with gentle rises and falls; pause at commas.",
+    "delivery_prompt_help": "This engine supports natural-language directions. The reference audio still provides the voice identity.",
+    "describe_tags_only": "OmniVoice accepts fixed tags only: gender, age, pitch, whisper, English accent, or Chinese dialect. It does not support natural-language directions or emotion prompts. Choose a free-text or emotion-capable engine for prompts.",
+    "reading_cues": "Reading cues",
+    "cue_slow": "Slow",
+    "cue_fast": "Fast",
+    "cue_emphasis": "Emphasize gently",
+    "cue_pause": "Pause",
+    "cue_whisper": "Whisper",
+    "reading_cue_help": "Use [slow]...[/slow] or [fast]...[/fast] to change a passage’s pace. [emphasis] adds a slight slowdown; [pause] inserts silence.",
+    "reading_cue_whisper_help": "Use [whisper]...[/whisper] to whisper this passage.",
     "optional": "(Optional)",
     "save_as_profile": "Save as voice profile",
     "profile_name": "Profile name",
@@ -915,7 +927,6 @@
     "no_video": "No video loaded",
     "segments": "segments",
     "speakers": "speakers",
-    "video_dubbing_studio": "Video Dubbing Studio",
     "drop_here": "Drop video or audio here",
     "paste_url": "…or paste YouTube / video URL",
     "ingest": "Ingest",
@@ -1149,7 +1160,8 @@
     "segment_count_other": "{{count}} segments",
     "glossary_terms_one": "Glossary · {{count}} term",
     "glossary_terms_other": "Glossary · {{count}} terms",
-    "glossary_label": "Glossary"
+    "glossary_label": "Glossary",
+   "video_dubbing_studio": "Video Dubbing Studio"
   },
   "dub_workflow": {
     "preparing_audio": "Preparing audio…",
@@ -2837,6 +2849,9 @@
     "tailscale_qr_alt": "QR code for the Tailscale URL"
   },
   "convert": {
+    "nav_label": "Convert voice from file",
+    "workflow_title": "Convert speech in an audio file",
+    "file_too_large": "This file exceeds the 64 MB limit. Choose a shorter MP3 or reduce the file size.",
     "cloning_required": "Choose a ready text-to-speech model that supports voice cloning.",
     "source_kicker": "Source clip",
     "drop_audio": "Drop the clip to convert — or click. WAV, MP3, M4A…",
@@ -4321,9 +4336,9 @@
       "stems_hint": "The original recording is unseparated. Use Computer for an isolated background track.",
       "timing": "Timing",
       "top": "Place subtitles at the top",
-      "video_required": "Generate a video output before exporting multiple audio tracks.",
       "white": "White",
-      "yellow": "Yellow"
+      "yellow": "Yellow",
+     "video_required": "Generate a video output before exporting multiple audio tracks."
     },
     "handoff": {
       "title": "Project handoff and backup",
@@ -4395,12 +4410,12 @@
     "tls_connection_dropped": "The secure connection dropped. Retry; if it repeats, try without a VPN.",
     "transformers_import": "A speech component failed to load. Check the backend log for the cause.",
     "unsupported_video_url": "This link isn't a video page. Paste a direct video link, or upload the file.",
-    "video_download_bot_check": "YouTube asks for a signed-in check. Attach a cookies.txt export in Dub, or upload the file.",
-    "video_download_network": "The video download dropped. Retry; if it repeats, check your network.",
-    "video_download_os_error": "The video couldn't be saved. Check free space and that the data folder is writable.",
-    "video_drm_protected": "This video is DRM-protected and can't be downloaded. Try again later or upload the file.",
     "windows_paging_file_too_small": "Windows needs a larger paging file for this model. Set it to at least 32 GB and restart, or use a smaller engine.",
-    "windows_untrusted_mount": "Windows blocked a folder on an untrusted drive. Move the data folder to a regular local drive."
+    "windows_untrusted_mount": "Windows blocked a folder on an untrusted drive. Move the data folder to a regular local drive.",
+   "video_download_bot_check": "YouTube asks for a signed-in check. Attach a cookies.txt export in Dub, or upload the file.",
+   "video_download_network": "The video download dropped. Retry; if it repeats, check your network.",
+   "video_download_os_error": "The video couldn\u0027t be saved. Check free space and that the data folder is writable.",
+   "video_drm_protected": "This video is DRM-protected and can\u0027t be downloaded. Try again later or upload the file."
   },
   "failureAction": {
     "add_transcript": "Add transcript",

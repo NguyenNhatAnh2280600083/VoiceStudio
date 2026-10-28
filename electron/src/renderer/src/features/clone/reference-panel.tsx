@@ -242,8 +242,7 @@ export function OptionalDetails({
 }) {
   const { t } = useTranslation();
   const refText = useCloneSetting('refText');
-  const instruct = useCloneSetting('instruct');
-  const [open, setOpen] = useState(() => Boolean(refText || instruct));
+  const [open, setOpen] = useState(() => Boolean(refText));
   useEffect(() => {
     if (
       refText ||
@@ -254,7 +253,6 @@ export function OptionalDetails({
       setOpen(true);
   }, [refText, transcription?.state]);
   const transcriptId = useId();
-  const styleId = useId();
   useEffect(() => {
     const focus = () => {
       setOpen(true);
@@ -274,7 +272,7 @@ export function OptionalDetails({
         />
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="grid grid-cols-1 gap-3 px-3 pb-3 @min-[420px]:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 px-3 pb-3">
           <div className="flex min-w-0 flex-col gap-1.5">
             <Label htmlFor={transcriptId} className="text-[length:var(--text-label)]">
               {t('clone.transcript')}
@@ -330,17 +328,6 @@ export function OptionalDetails({
                 {t('referenceAsr.retry')}
               </Button>
             )}
-          </div>
-          <div className="flex min-w-0 flex-col gap-1.5">
-            <Label htmlFor={styleId} className="text-[length:var(--text-label)]">
-              {t('clone.style')}
-            </Label>
-            <Input
-              id={styleId}
-              value={instruct}
-              onChange={(event) => setCloneSetting('instruct', event.target.value)}
-              placeholder={t('clone.style_placeholder')}
-            />
           </div>
         </div>
       </CollapsibleContent>

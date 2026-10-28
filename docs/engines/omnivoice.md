@@ -71,7 +71,7 @@ The env var overrides the persisted UI choice.
   If no recognizer is installed, supply a matching reference transcript or
   explicitly install and select a speech-to-text model in Model Catalogue. A clip with a supplied transcript is limited
   to 20 seconds so the two stay aligned; trim both to the same passage. Without
-  a transcript, VoiceStudio can search up to 75 seconds in five contiguous,
+  a transcript, VoiceStudio can search up to 300 seconds in twenty contiguous,
   bounded transcription passes and selects the 15-second passage with the most
   detected speech. Those passes use the speech-to-text model already installed
   in Model Catalogue. For a clip longer than 20 seconds, VoiceStudio skips
@@ -82,7 +82,7 @@ The env var overrides the persisted UI choice.
   is too long and to trim it to 3–10 seconds, since a transcript cannot rescue it.
   A transcript typed on the request for
   such a clip is rejected with `[clone_ref_too_long]`.
-  Only that 15-second window is sent to the model. Clips longer than 75 seconds
+  Only that 15-second window is sent to the model. Clips longer than 300 seconds
   must be trimmed first. If no spoken words are detected, trim to
   a clear 3–10 second passage or provide its matching transcript.
 - For cross-language cloning, keep the reference transcript in the sample's
@@ -105,6 +105,10 @@ The env var overrides the persisted UI choice.
   names (upstream documents dialect cloning as the canonical case — dialect
   reference + matching dialect instruct). When they conflict, the reference
   audio wins.
+- Clone's reading-direction field accepts only the fixed tags listed under
+  Voice Design. It does not accept natural-language delivery prompts; choose
+  an engine with free-text instructions or emotion controls to steer delivery
+  with a written prompt.
 - Inline pronunciation control: Chinese via pinyin with tone numbers
   (`打ZHE2出售`), English via bracketed CMU phonemes (`[B EY1 S]`). Non-verbal
   tags like `[laughter]` are covered in

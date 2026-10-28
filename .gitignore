@@ -22,6 +22,8 @@ node_modules/
 node_modules
 .turbo/
 bun.lockb
+.tools/
+.local-data/
 frontend/src-tauri/
 electron/.tmp-native-target/
 native/**/target*/
@@ -75,6 +77,7 @@ omnivoice_data/
 /results/
 /download
 /run*
+!/run-local.ps1
 *.db
 *.db-shm
 *.db-wal

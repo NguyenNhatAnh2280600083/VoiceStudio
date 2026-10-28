@@ -499,7 +499,7 @@
     "steps": "Adımlar",
     "voice_source": "Ses Kaynağı",
     "reference_audio": "Referans ses",
-    "reference_hint": "5–15 saniyelik net konuşma kullanın.",
+    "reference_hint": "5–15 saniyelik net konuşma kullanın. 5 dakikaya kadar yükleyin; en iyi 15 saniyelik bölüm otomatik seçilir. 20 saniyeden uzun klipler için yüklü bir konuşmayı yazıya çevirme modeli gerekir.",
     "ref_usage_best_window": "Bu motor en fazla {{seconds}} sn kullanır — en iyi bölüm otomatik seçilir.",
     "ref_usage_head": "Bu motor bu klibin ilk {{seconds}} sn'sini kullanır.",
     "ref_usage_long": "Önerilen {{seconds}} sn'den uzun. Klibin tamamı motora gönderilir.",
@@ -593,6 +593,18 @@
     "dialect_qingdao": "Qingdao lehçesi",
     "dialect_dongbei": "Kuzeydoğu lehçesi",
     "style_placeholder": "örneğin fısıltı",
+    "delivery_prompt": "Okuma yönergesi",
+    "delivery_prompt_placeholder": "örn. sıcak ve sakin, yumuşak tonlama değişimleriyle; virgüllerde duraklayarak.",
+    "delivery_prompt_help": "Bu motor doğal dilde yönergeleri destekler. Ses kimliği yine referans sesinden gelir.",
+    "describe_tags_only": "OmniVoice yalnızca sabit etiketleri destekler: cinsiyet, yaş, ses perdesi, fısıltı, İngiliz aksanı veya Çince lehçesi. Doğal dil yönergeleri ve duygu promptları desteklenmez. Prompt kullanmak için serbest metin veya duygu destekli bir motor seçin.",
+    "reading_cues": "Okuma işaretleri",
+    "cue_slow": "Yavaş",
+    "cue_fast": "Hızlı",
+    "cue_emphasis": "Hafifçe vurgula",
+    "cue_pause": "Duraklama",
+    "cue_whisper": "Fısıltı",
+    "reading_cue_help": "Bir bölümün temposunu değiştirmek için [slow]...[/slow] veya [fast]...[/fast] kullanın. [emphasis] hafifçe yavaşlatır; [pause] sessizlik ekler.",
+    "reading_cue_whisper_help": "Bu bölümü fısıltıyla okutmak için [whisper]...[/whisper] kullanın.",
     "stop_playback": "Oynatmayı durdur",
     "describe_label": "Sesinizi tarif edin",
     "describe_placeholder": "örn. a warm elderly British storyteller, slightly raspy",
@@ -704,7 +716,6 @@
     "no_video": "Video yüklenmedi",
     "segments": "bölümler",
     "speakers": "hoparlörler",
-    "video_dubbing_studio": "Video Dublaj Stüdyosu",
     "drop_here": "Videoyu veya sesi buraya bırakın",
     "paste_url": "…veya YouTube / video URL'sini yapıştırın",
     "ingest": "Al",
@@ -936,7 +947,8 @@
     "segment_count_other": "{{count}} bölüm",
     "glossary_terms_one": "Sözlük · {{count}} terim",
     "glossary_terms_other": "Sözlük · {{count}} terim",
-    "glossary_label": "Sözlük"
+    "glossary_label": "Sözlük",
+   "video_dubbing_studio": "Video Dublaj Stüdyosu"
   },
   "dub_workflow": {
     "preparing_audio": "Ses hazırlanıyor…",
@@ -4321,9 +4333,9 @@
       "stems_hint": "Özgün kayıt ayrıştırılmamıştır. Ayrı arka plan parçası için Bilgisayarı kullanın.",
       "timing": "Zamanlama",
       "top": "Altyazıları üste yerleştir",
-      "video_required": "Birden fazla ses parçasını aktarmadan önce video oluşturun.",
       "white": "Beyaz",
-      "yellow": "Sarı"
+      "yellow": "Sarı",
+     "video_required": "Birden fazla ses parçasını aktarmadan önce video oluşturun."
     },
     "handoff": {
       "title": "Proje aktarımı ve yedekleme",
@@ -4395,12 +4407,12 @@
     "tls_connection_dropped": "Güvenli bağlantı koptu. Yeniden deneyin; tekrarlarsa VPN olmadan deneyin.",
     "transformers_import": "Bir konuşma bileşeni yüklenemedi. Nedeni arka uç günlüğünde.",
     "unsupported_video_url": "Bu bağlantı bir video sayfası değil. Doğrudan bir video bağlantısı yapıştırın veya dosyayı yükleyin.",
-    "video_download_bot_check": "YouTube oturum açılmış bir doğrulama istiyor. Dublaj'da bir cookies.txt dışa aktarımı ekleyin veya dosyayı yükleyin.",
-    "video_download_network": "Video indirmesi kesildi. Yeniden deneyin; tekrarlarsa ağınızı kontrol edin.",
-    "video_download_os_error": "Video kaydedilemedi. Boş alanı ve veri klasörünün yazılabilir olduğunu kontrol edin.",
-    "video_drm_protected": "Bu video DRM korumalı ve indirilemez. Daha sonra deneyin veya dosyayı yükleyin.",
     "windows_paging_file_too_small": "Windows bu model için daha büyük bir disk belleği dosyasına ihtiyaç duyuyor. En az 32 GB ayarlayıp yeniden başlatın veya daha küçük bir motor kullanın.",
-    "windows_untrusted_mount": "Windows güvenilmeyen bir sürücüdeki klasörü engelledi. Veri klasörünü normal bir yerel sürücüye taşıyın."
+    "windows_untrusted_mount": "Windows güvenilmeyen bir sürücüdeki klasörü engelledi. Veri klasörünü normal bir yerel sürücüye taşıyın.",
+   "video_download_bot_check": "YouTube oturum açılmış bir doğrulama istiyor. Dublaj\u0027da bir cookies.txt dışa aktarımı ekleyin veya dosyayı yükleyin.",
+   "video_download_network": "Video indirmesi kesildi. Yeniden deneyin; tekrarlarsa ağınızı kontrol edin.",
+   "video_download_os_error": "Video kaydedilemedi. Boş alanı ve veri klasörünün yazılabilir olduğunu kontrol edin.",
+   "video_drm_protected": "Bu video DRM korumalı ve indirilemez. Daha sonra deneyin veya dosyayı yükleyin."
   },
   "failureAction": {
     "add_transcript": "Transkript ekle",

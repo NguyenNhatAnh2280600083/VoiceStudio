@@ -1163,6 +1163,7 @@ def _omnivoice_installed_passage(ref_audio: str) -> Optional[tuple[str, str]]:
     try:
         import soundfile as sf
         from services.asr_backend import transcribe_reference
+        import numpy as np
     except Exception:
         logger.debug("installed reference ASR import failed")
         return None
@@ -1175,7 +1176,56 @@ def _omnivoice_installed_passage(ref_audio: str) -> Optional[tuple[str, str]]:
     best_text = ""
     best_index = 0
     n_windows = min(CLONE_REF_MAX_WINDOWS, (len(audio) + window - 1) // window)
+    # A three-minute reference can contain twelve windows. Transcribing each
+    # one serially made one voice conversion spend minutes on reference ASR
+    # before it could synthesize anything. Use a cheap RMS voice-activity
+    # estimate to select a few candidates across the whole clip, then let ASR
+    # choose the cleanest spoken passage among them.
+    frame = max(1, int(sr * 0.05))
+    frame_energies = []
     for index in range(n_windows):
+        chunk = audio[index * window:min((index + 1) * window, len(audio))]
+        count = len(chunk) // frame
+        if count:
+            frames = chunk[:count * frame].reshape(count, frame)
+            frame_energies.append(np.sqrt(np.mean(frames * frames, axis=1)))
+        else:
+            frame_energies.append(np.zeros(1, dtype=np.float32))
+    all_energies = np.concatenate(frame_energies)
+    activity_floor = max(
+        float(np.quantile(all_energies, 0.30)) * 2.5,
+        float(np.quantile(all_energies, 0.70)) * 0.08,
+        0.003,
+    )
+    activity_scores = [float(np.mean(energy > activity_floor)) for energy in frame_energies]
+    ranked_windows = sorted(
+        range(n_windows), key=lambda i: (activity_scores[i], -i), reverse=True
+    )
+    # Two well-separated high-activity passages are enough for a useful
+    # reference transcript. Evaluating four candidates required up to four
+    # serial ASR calls before a first-time conversion could render, with little
+    # benefit once activity scoring has already filtered the silent windows.
+    max_asr_candidates = 2
+    candidate_indices = []
+    for index in ranked_windows:
+        # Spread candidates through the recording so nearby loud passages do
+        # not crowd out other sections of a long reference.
+        if all(abs(index - picked) >= 2 for picked in candidate_indices):
+            candidate_indices.append(index)
+        if len(candidate_indices) >= max_asr_candidates:
+            break
+    if len(candidate_indices) < min(max_asr_candidates, n_windows):
+        for index in ranked_windows:
+            if index not in candidate_indices:
+                candidate_indices.append(index)
+            if len(candidate_indices) >= min(max_asr_candidates, n_windows):
+                break
+    logger.info(
+        "ranking %d of %d windows for long voice reference",
+        len(candidate_indices), n_windows,
+    )
+
+    for index in sorted(candidate_indices):
         chunk = audio[index * window:(index + 1) * window]
         if len(chunk) == 0:
             continue
@@ -1248,7 +1298,7 @@ def _materialize_window(ref_audio: str, index: int) -> Optional[str]:
 def _reuse_or_rank_passage(ref_audio: str) -> Optional[tuple[str, str]]:
     """Return the cached 15 s window, or rank one and remember the result.
 
-    A remembered miss (no spoken words, or a clip past five windows) is not
+    A remembered miss (no spoken words, or a clip past the window cap) is not
     ranked again. The caller deletes the wav path.
     """
     if _reference_asr_identity():
@@ -1265,8 +1315,9 @@ def _reuse_or_rank_passage(ref_audio: str) -> Optional[tuple[str, str]]:
 def prepare_reference_passage(ref_audio) -> bool:
     """Rank a long reference's best 15 s window NOW, off the generate clock.
 
-    Picking the window runs the installed recognizer over up to five 15 s
-    windows. On a CPU that is minutes, and when it ran inside the engine call
+    Picking the window runs the installed recognizer over at most two 15 s
+    windows selected by a fast audio-activity pass. Scanning every window on a
+    CPU took minutes, and when it ran inside the engine call
     it was charged to the generate budget: the job was then abandoned with
     "TTS generate exceeded 300s" before a single sample was synthesized
     (#2764's log shows a CPU Whisper large-v3 transcribing the voice just

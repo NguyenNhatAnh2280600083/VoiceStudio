@@ -89,7 +89,12 @@ export function PipelineFailure({
       ? t(`failureCause.${cause}.title`)
       : rawText;
   const fixes = cause ? [1, 2].map((n) => t(`failureCause.${cause}.fix${n}`)) : [];
-  const rawDetail = (topic || cause) && rawText !== title ? rawText : '';
+  const rawDetail =
+    visibleFailure?.diagnostic && visibleFailure.diagnostic !== rawText
+      ? visibleFailure.diagnostic
+      : (topic || cause) && rawText !== title
+        ? rawText
+        : '';
   const hint = topic ? undefined : visibleFailure?.hint;
   return (
     <div

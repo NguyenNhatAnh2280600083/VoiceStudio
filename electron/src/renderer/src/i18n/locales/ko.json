@@ -499,7 +499,7 @@
     "steps": "단계",
     "voice_source": "음성 소스",
     "reference_audio": "참조 오디오",
-    "reference_hint": "깨끗한 음성 5~15초를 사용하세요.",
+    "reference_hint": "깨끗한 음성 5~15초를 사용하세요. 최대 5분까지 업로드할 수 있으며 가장 적합한 15초 구간이 자동으로 선택됩니다. 20초가 넘는 클립에는 설치된 음성 인식 모델이 필요합니다.",
     "ref_usage_best_window": "이 엔진은 최대 {{seconds}}초를 사용합니다. 가장 좋은 구간이 자동으로 선택됩니다.",
     "ref_usage_head": "이 엔진은 이 클립의 처음 {{seconds}}초를 사용합니다.",
     "ref_usage_long": "권장 길이 {{seconds}}초보다 깁니다. 클립 전체가 엔진으로 전달됩니다.",
@@ -593,6 +593,18 @@
     "dialect_qingdao": "칭다오 방언",
     "dialect_dongbei": "둥베이 방언",
     "style_placeholder": "예를 들어 속삭임",
+    "delivery_prompt": "낭독 지시",
+    "delivery_prompt_placeholder": "예: 따뜻하고 차분하게, 부드러운 억양 변화와 쉼표에서의 멈춤을 넣어 읽기.",
+    "delivery_prompt_help": "이 엔진은 자연어 지시를 지원합니다. 목소리의 정체성은 계속 참조 오디오에서 가져옵니다.",
+    "describe_tags_only": "OmniVoice는 성별, 나이, 음높이, 속삭임, 영어 억양, 중국어 방언의 고정 태그만 지원합니다. 자연어 지시와 감정 프롬프트는 지원하지 않습니다. 프롬프트를 사용하려면 자유 입력 또는 감정 지원 엔진을 선택하세요.",
+    "reading_cues": "낭독 표시",
+    "cue_slow": "느리게",
+    "cue_fast": "빠르게",
+    "cue_emphasis": "가볍게 강조",
+    "cue_pause": "멈춤",
+    "cue_whisper": "속삭임",
+    "reading_cue_help": "[slow]...[/slow] 또는 [fast]...[/fast]로 구간의 속도를 바꾸세요. [emphasis]는 약간 느리게 강조하고, [pause]는 무음을 넣습니다.",
+    "reading_cue_whisper_help": "이 구간을 속삭이듯 읽으려면 [whisper]...[/whisper]를 사용하세요.",
     "stop_playback": "재생 중지",
     "describe_label": "목소리를 설명하세요",
     "describe_placeholder": "예: a warm elderly British storyteller, slightly raspy",
@@ -702,7 +714,6 @@
     "no_video": "로드된 동영상이 없습니다.",
     "segments": "세그먼트",
     "speakers": "화자",
-    "video_dubbing_studio": "비디오 더빙 스튜디오",
     "drop_here": "여기에 비디오나 오디오를 드롭하세요.",
     "paste_url": "...또는 YouTube/동영상 URL을 붙여넣으세요.",
     "ingest": "가져오기",
@@ -936,7 +947,8 @@
     "segment_count_other": "세그먼트 {{count}}개",
     "glossary_terms_one": "용어집 · {{count}}개",
     "glossary_terms_other": "용어집 · {{count}}개",
-    "glossary_label": "용어집"
+    "glossary_label": "용어집",
+   "video_dubbing_studio": "비디오 더빙 스튜디오"
   },
   "dub_workflow": {
     "preparing_audio": "오디오 준비 중…",
@@ -4321,9 +4333,9 @@
       "stems_hint": "원본 녹음은 분리되지 않았습니다. 배경 트랙을 분리하려면 컴퓨터를 사용하세요.",
       "timing": "타이밍",
       "top": "자막을 위에 배치",
-      "video_required": "여러 오디오 트랙을 내보내기 전에 동영상을 생성하세요.",
       "white": "흰색",
-      "yellow": "노란색"
+      "yellow": "노란색",
+     "video_required": "여러 오디오 트랙을 내보내기 전에 동영상을 생성하세요."
     },
     "handoff": {
       "title": "프로젝트 전송 및 백업",
@@ -4395,12 +4407,12 @@
     "tls_connection_dropped": "보안 연결이 끊겼습니다. 다시 시도하고, 반복되면 VPN 없이 시도하세요.",
     "transformers_import": "음성 구성 요소를 불러오지 못했습니다. 원인은 백엔드 로그에서 확인하세요.",
     "unsupported_video_url": "이 링크는 동영상 페이지가 아닙니다. 동영상 직접 링크를 붙여 넣거나 파일을 업로드하세요.",
-    "video_download_bot_check": "YouTube가 로그인 확인을 요구합니다. 더빙에서 cookies.txt 내보내기를 첨부하거나 파일을 업로드하세요.",
-    "video_download_network": "동영상 다운로드가 끊겼습니다. 다시 시도하고, 반복되면 네트워크를 확인하세요.",
-    "video_download_os_error": "동영상을 저장하지 못했습니다. 여유 공간과 데이터 폴더 쓰기 권한을 확인하세요.",
-    "video_drm_protected": "이 동영상은 DRM으로 보호되어 다운로드할 수 없습니다. 나중에 다시 시도하거나 파일을 업로드하세요.",
     "windows_paging_file_too_small": "이 모델에는 더 큰 Windows 페이징 파일이 필요합니다. 32GB 이상으로 설정하고 다시 시작하거나 더 작은 엔진을 사용하세요.",
-    "windows_untrusted_mount": "Windows가 신뢰할 수 없는 드라이브의 폴더를 차단했습니다. 데이터 폴더를 일반 로컬 드라이브로 옮기세요."
+    "windows_untrusted_mount": "Windows가 신뢰할 수 없는 드라이브의 폴더를 차단했습니다. 데이터 폴더를 일반 로컬 드라이브로 옮기세요.",
+   "video_download_bot_check": "YouTube가 로그인 확인을 요구합니다. 더빙에서 cookies.txt 내보내기를 첨부하거나 파일을 업로드하세요.",
+   "video_download_network": "동영상 다운로드가 끊겼습니다. 다시 시도하고, 반복되면 네트워크를 확인하세요.",
+   "video_download_os_error": "동영상을 저장하지 못했습니다. 여유 공간과 데이터 폴더 쓰기 권한을 확인하세요.",
+   "video_drm_protected": "이 동영상은 DRM으로 보호되어 다운로드할 수 없습니다. 나중에 다시 시도하거나 파일을 업로드하세요."
   },
   "failureAction": {
     "add_transcript": "대본 추가",

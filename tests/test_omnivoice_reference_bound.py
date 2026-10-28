@@ -190,7 +190,7 @@ def test_selected_passage_rms_undoes_input_gain(monkeypatch):
     assert prompt.ref_rms == pytest.approx(0.02)
 
 
-def test_far_late_speech_at_auto_select_limit_survives_with_five_asr_calls(monkeypatch):
+def test_far_late_speech_at_auto_select_limit_survives_with_twenty_asr_calls(monkeypatch):
     model = _model(reject_tokenization=False)
     model.sampling_rate = 100
     model._asr_pipe = object()
@@ -205,13 +205,13 @@ def test_far_late_speech_at_auto_select_limit_survives_with_five_asr_calls(monke
         "omnivoice.models.omnivoice.remove_silence_safe",
         lambda audio, *_args, **_kwargs: audio,
     )
-    audio = torch.zeros((1, 75 * 100))
+    audio = torch.zeros((1, 300 * 100))
     audio[:, -5 * 100 :] = 0.02
 
     prompt = model.create_voice_clone_prompt((audio, 100), ref_text=None)
 
     assert prompt.ref_text == "Late speech."
-    assert len(calls) == 5
+    assert len(calls) == 20
 
 
 def test_sixteen_second_reference_uses_bounded_selection_without_preprocessing():
@@ -240,10 +240,10 @@ def test_auto_select_rejects_one_sample_over_limit_before_asr():
     model._asr_pipe = object()
     calls = []
     model.transcribe = lambda candidate: calls.append(candidate) or "Speech."
-    audio = torch.full((1, 75 * 100 + 1), 0.1)
+    audio = torch.full((1, 300 * 100 + 1), 0.1)
 
     with pytest.raises(
-        ValueError, match=r"\[clone_ref_too_long\].*at most 75 seconds"
+        ValueError, match=r"\[clone_ref_too_long\].*at most 300 seconds"
     ) as caught:
         model.create_voice_clone_prompt((audio, 100), ref_text=None)
 

@@ -113,7 +113,7 @@ plainly):
 
 * **Length:** cloning works from as little as ~3 seconds, but
   **5–15 seconds of continuous clean speech is the sweet spot**
-  (~8 s is ideal). Voice Clone accepts up to 75 seconds, but each
+  (~8 s is ideal). Voice Clone accepts up to 300 seconds, but each
   engine uses only part of a long clip — the default engine picks its
   best 15-second passage, VoxCPM2 keeps the first 30 seconds; see
   [reference clip length](../engines/README.md#reference-clip-length).

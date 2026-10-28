@@ -4,9 +4,8 @@ The user drops (or records) a source clip, picks an existing voice profile,
 and gets the same words back in that profile's voice: the active ASR backend
 transcribes the clip (no word timestamps — the text is all we need), the
 active TTS engine re-synthesizes it conditioned on the profile's reference
-audio, and — by default — the take is pitch-preservingly time-stretched
-(ffmpeg atempo, clamped to one well-behaved 0.5–2.0 stage) so it lands near
-the source clip's duration.
+audio, and — by default — the take is gently pitch-preservingly time-stretched
+(ffmpeg atempo, clamped to 0.8–1.25×) toward the source clip's duration.
 
 Deliberately reuses the /generate choke points instead of re-deriving them:
 
@@ -44,12 +43,11 @@ from core.path_security import upload_suffix
 router = APIRouter()
 logger = logging.getLogger("omnivoice.convert")
 
-#: ffmpeg's atempo filter is well-behaved in [0.5, 2.0] per stage. Convert
-#: clamps to ONE stage by design: needing more than 2× either way means the
-#: synthesized speech differs so much from the source that "matching" it
-#: would produce chipmunk/slow-motion artifacts worse than the mismatch.
-ATEMPO_MIN = 0.5
-ATEMPO_MAX = 2.0
+#: Keep duration matching gentle: large global time warps make consonants
+#: smeared and the cloned voice sound less like its reference. The model's
+#: natural cadence wins when the source and synthesized lengths differ more.
+ATEMPO_MIN = 0.8
+ATEMPO_MAX = 1.25
 
 #: Within this relative tolerance the durations already match — stretching
 #: would resample the whole take for an inaudible gain.
@@ -82,8 +80,9 @@ def _clamped_tempo_ratio(tts_duration_s: float, source_duration_s: float) -> "fl
     """The atempo ratio that fits the take into the source duration, or None.
 
     ratio > 1 speeds the take up (it came out longer than the source),
-    ratio < 1 slows it down. Clamped to a single atempo stage's [0.5, 2.0];
-    None when either duration is unusable or they already match.
+    ratio < 1 slows it down. Clamped to a modest [0.8, 1.25] range to retain
+    articulation and the cloned speaker's timbre; None when duration is unusable
+    or already close enough.
     """
     if not source_duration_s or source_duration_s <= 0:
         return None
@@ -167,8 +166,55 @@ def _is_auto(language: "str | None") -> bool:
     return str(language or "").strip().lower() in ("", "auto")
 
 
+def _script_with_source_pauses(
+    segments: list[dict], fallback_text: str,
+) -> str:
+    """Keep only clear source silences as timing cues; leave prosody to the clone.
+
+    ASR segment durations and loudness are poor estimates of emphasis or pace.
+    Applying per-segment speed/emphasis tags splits the render into separately
+    synthesized pieces, which can make it choppy and weaken voice consistency.
+    Rejoin the recognized phrases and split only at an unmistakable pause.
+    """
+    from services.refinement import collapse_repetitive_artifacts
+
+    timed = []
+    for segment in segments or []:
+        phrase = collapse_repetitive_artifacts(
+            str(segment.get("text") or "").strip()
+        ).strip()
+        if not phrase:
+            continue
+        try:
+            start = float(segment.get("start"))
+            end = float(segment.get("end"))
+        except (TypeError, ValueError):
+            return fallback_text
+        if not (0 <= start <= end):
+            return fallback_text
+        timed.append((start, end, phrase))
+    if len(timed) < 2:
+        return fallback_text
+
+    parts = [timed[0][2]]
+    for previous, current in zip(timed, timed[1:]):
+        gap_s = max(0.0, current[0] - previous[1])
+        if gap_s >= 0.6:
+            # Keep the source's phrasing, but compress long silences: ASR
+            # boundaries often exaggerate pauses and multi-second gaps sound
+            # unnatural when reproduced literally in a short conversion.
+            pause_ms = min(550, max(180, round((gap_s - 0.2) * 450)))
+            parts.append(f" [pause {pause_ms}ms] ")
+        else:
+            parts.append(" ")
+        parts.append(current[2])
+    script = "".join(parts).strip()
+    return script or fallback_text
+
+
 async def _transcribe_source(
     tmp_path: str, *, source_lease=None, language: "str | None" = None,
+    timeout_s: float | None = None,
 ) -> dict:
     """Active-ASR transcription of the uploaded clip (no word timestamps).
 
@@ -178,6 +224,7 @@ async def _transcribe_source(
     degrades onto an engine with no weights on disk (#1185).
     """
     from services.asr_backend import (
+        ASR_TRANSCRIBE_TIMEOUT_S,
         ASRModelMissingError,
         ASRTimeoutError,
         asr_model_missing_detail,
@@ -206,15 +253,39 @@ async def _transcribe_source(
             kwargs["language"] = code
         return backend.transcribe(tmp_path, **kwargs)
 
-    from services.model_manager import _gpu_pool
+    from services.model_manager import (
+        _cpu_pool,
+        _gpu_pool,
+        offload_tts_for_asr,
+        restore_tts_after_asr,
+    )
+    loop = asyncio.get_running_loop()
+    try:
+        # Match dubbing: free recoverable TTS VRAM before ASR selects a device
+        # and loads its weights. Otherwise large-v3 can OOM beside resident TTS.
+        await loop.run_in_executor(_cpu_pool, offload_tts_for_asr)
+    except Exception as e:  # noqa: BLE001 - ASR should still try if offload fails
+        logger.warning("TTS offload before voice-convert ASR failed: %s", e)
+
     release = source_lease.acquire() if source_lease is not None else None
     abandoned = False
+
+    def _abandon_cleanup():
+        # A timed-out native transcribe still owns its device. Keep TTS offloaded
+        # until the worker exits, then release its source and restore TTS.
+        try:
+            restore_tts_after_asr()
+        finally:
+            if release is not None:
+                release()
+
     try:
         return await run_transcribe_guarded(
             _gpu_pool,
             _run,
             what="Voice convert",
-            on_abandon=release,
+            timeout=timeout_s or ASR_TRANSCRIBE_TIMEOUT_S,
+            on_abandon=_abandon_cleanup,
         )
     except asyncio.CancelledError:
         # The guard now owns the lease token until the native worker drains.
@@ -232,6 +303,8 @@ async def _transcribe_source(
     finally:
         if release is not None and not abandoned:
             release()
+        if not abandoned:
+            await loop.run_in_executor(_cpu_pool, restore_tts_after_asr)
 
 
 @router.post("/convert")
@@ -245,13 +318,15 @@ async def convert_speech(
 
     Multipart form: ``audio`` (the source clip), ``profile_id`` (an existing
     voice profile), optional ``match_duration`` (default on — atempo the take
-    toward the source clip's length, clamped to 0.5–2.0×).
+    toward the source clip's length, clamped to 0.8–1.25×).
 
     Returns JSON ``{audio_url, text, duration_s, id}`` — the take is saved to
     OUTPUTS_DIR and served from the ``/audio`` mount like every other take.
     """
     from core.db import db_conn
     from api.routers.generation import _resolve_profile_conditioning, _TempReferenceLease
+    request_started = time.perf_counter()
+    generation_started_at = time.time()
 
     # ── Profile first: strict 404, unlike /generate's silent skip — Convert
     # has no meaning without a target voice.
@@ -285,7 +360,7 @@ async def convert_speech(
         # clone-less engine with the actionable switch-engine message (→ 400),
         # and a backend mid-shutdown raises ModelLoadInterruptedByShutdown out
         # of the model load → the global 503 [shutting_down] handler.
-        from services.tts_backend import active_backend_id, resolve_generation_backend
+        from services.tts_backend import resolve_generation_backend
         try:
             backend = await resolve_generation_backend(
                 require_cloning=True, cloning_purpose="voice conversion",
@@ -294,13 +369,46 @@ async def convert_speech(
             raise HTTPException(status_code=400, detail=str(e))
 
         cond = _resolve_profile_conditioning(row, engine_id=backend.id)
+        # Clone profiles promise a referenced speaker identity, so require the
+        # actual saved sample. Design profiles may intentionally be instruction-
+        # only; if they have a rendered sample, verify it before using it.
+        target_reference = cond.get("ref_audio_path")
+        reference_required = cond.get("kind") != "design" or bool(target_reference)
+        if reference_required and (
+            not target_reference or not os.path.isfile(target_reference)
+        ):
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    "This voice profile has no usable reference recording. "
+                    "Add or restore its voice sample, then convert again."
+                ),
+            )
         # Spoken language of the SOURCE clip: the explicit pick, else (Auto) the
         # target profile's language (so Armenian speech isn't read as Russian).
         # A pick Whisper doesn't support keeps auto-detect rather than
         # silently switching to the profile's language.
         source_language = cond["language"] if _is_auto(language) else language
+        # ffprobe is cheap and gives us both the duration-match target and a
+        # sensible upper bound for ASR. A short clip should not leave the UI
+        # waiting on the generic five-minute whole-file timeout if a model
+        # wedges under GPU memory pressure.
+        from services.ffmpeg_utils import probe_duration
+        source_duration_s = await probe_duration(
+            tmp.name, allowed_root=os.path.dirname(tmp.name),
+        )
+        from services.asr_backend import ASR_TRANSCRIBE_TIMEOUT_S
+        asr_timeout_s = ASR_TRANSCRIBE_TIMEOUT_S
+        if source_duration_s and source_duration_s > 0:
+            asr_timeout_s = min(
+                ASR_TRANSCRIBE_TIMEOUT_S,
+                max(60.0, 10.0 + source_duration_s * 1.5),
+            )
+
+        asr_started = time.perf_counter()
         result = await _transcribe_source(
             tmp.name, source_lease=source_lease, language=source_language,
+            timeout_s=asr_timeout_s,
         )
 
         segments = result.get("segments", [])
@@ -313,6 +421,10 @@ async def convert_speech(
         from services.refinement import collapse_repetitive_artifacts
         from services.text_polish import polish_text
         text = polish_text(collapse_repetitive_artifacts(text))
+        logger.info(
+            "source transcription completed in %.2fs (%d characters)",
+            time.perf_counter() - asr_started, len(text),
+        )
         if not text or not text.strip():
             raise HTTPException(
                 status_code=422,
@@ -322,6 +434,9 @@ async def convert_speech(
                     "audible speech and try again."
                 ),
             )
+        # Keep the plain transcript for the result/history, but give TTS the
+        # source's long pauses as inline cues so it can reproduce the cadence.
+        tts_text = _script_with_source_pauses(segments, text)
 
         # #308/#1032 parity with /generate: a clone profile saved without a
         # transcript conditions better when its reference clip is transcribed,
@@ -329,36 +444,53 @@ async def convert_speech(
         # per convert. Best-effort exactly like /generate — a timeout/failure
         # degrades to ref_text=None and the engine's own fallback. The ASR
         # model is already warm here (the source transcribe above just used it).
+        ref_asr_started = time.perf_counter()
         if cond["ref_audio_path"] and not cond["ref_text"]:
             from api.routers.generation import (
                 _generate_timeout_s,
                 _persist_profile_ref_text,
             )
-            from services.asr_backend import transcribe_reference
-            from services.model_manager import run_on_gpu_pool_guarded
-            try:
-                cond["ref_text"] = await run_on_gpu_pool_guarded(
-                    functools.partial(transcribe_reference, cond["ref_audio_path"]),
-                    what="Reference transcribe",
-                    timeout=_generate_timeout_s(""),
-                )
-            except TimeoutError as e:
-                logger.warning(
-                    "reference transcribe hung (%s); using engine ASR fallback", e,
-                )
-                cond["ref_text"] = None
-            if cond["ref_text"] and cond["persist_ref_text"]:
-                _persist_profile_ref_text(profile_id, cond["ref_text"])
+            from services.tts_backend import reference_duration_s
+
+            ref_duration = await asyncio.to_thread(
+                reference_duration_s, cond["ref_audio_path"],
+            )
+            from omnivoice.utils.audio import CLONE_REF_TEXT_MAX_SECONDS
+            # Long OmniVoice references are transcribed window-by-window by
+            # its clone-prompt path. Transcribing the entire reference here as
+            # well duplicates expensive ASR work before that selection starts.
+            needs_ref_transcript = not (
+                backend.id == "omnivoice"
+                and ref_duration is not None
+                and ref_duration > CLONE_REF_TEXT_MAX_SECONDS
+            )
+            if needs_ref_transcript:
+                from services.asr_backend import transcribe_reference
+                from services.model_manager import run_on_gpu_pool_guarded
+                try:
+                    cond["ref_text"] = await run_on_gpu_pool_guarded(
+                        functools.partial(transcribe_reference, cond["ref_audio_path"]),
+                        what="Reference transcribe",
+                        timeout=_generate_timeout_s(""),
+                    )
+                except TimeoutError as e:
+                    logger.warning(
+                        "reference transcribe hung (%s); using engine ASR fallback", e,
+                    )
+                    cond["ref_text"] = None
+                if cond["ref_text"] and cond["persist_ref_text"]:
+                    _persist_profile_ref_text(profile_id, cond["ref_text"])
+        if time.perf_counter() - ref_asr_started >= 0.1:
+            logger.info(
+                "target voice transcript preparation completed in %.2fs (%s)",
+                time.perf_counter() - ref_asr_started,
+                "available" if cond.get("ref_text") else "engine fallback",
+            )
 
         # Source duration for the optional match: the container's own length
         # (ffprobe), falling back to the last ASR segment end. Best-effort —
         # None just skips the stretch.
-        source_duration_s = None
         if match_duration:
-            from services.ffmpeg_utils import probe_duration
-            source_duration_s = await probe_duration(
-                tmp.name, allowed_root=os.path.dirname(tmp.name),
-            )
             if not source_duration_s and segments:
                 source_duration_s = max((s.get("end", 0) or 0) for s in segments) or None
 
@@ -367,6 +499,7 @@ async def convert_speech(
         from services.text_normalization import normalize_for_tts
         language = cond["language"]
         text = normalize_for_tts(text, language)
+        tts_text = normalize_for_tts(tts_text, language)
 
         used_seed = cond["seed"]
         if used_seed is None:
@@ -394,19 +527,32 @@ async def convert_speech(
                 detail=compute_profile["routing_reason"],
             )
 
-        start_time = time.time()
         from services.performance_profiles import tts_defaults
-        _profile_defaults = tts_defaults(active_backend_id())
+        # Use the backend resolved for this request. The active engine can
+        # change while ASR/reference preparation is running; consulting the
+        # global selection here could apply another engine's step defaults to
+        # the model that will actually render this take.
+        _profile_defaults = tts_defaults(backend.id)
+        # Keep the selected quality/performance tier for conversion too. A
+        # forced 8-step cap made the render faster, but reduced vocal detail
+        # and naturalness for Balanced, Quality, and Max users.
+        requested_steps = _profile_defaults.get("num_step", 16)
+        convert_steps = max(1, int(requested_steps or 16))
         _render = functools.partial(
             _run_backend_inference,
-            backend, text, language, cond["ref_audio_path"], cond["ref_text"],
+            backend, tts_text, language, cond["ref_audio_path"], cond["ref_text"],
             cond["instruct"],
-            None,        # duration — the model picks; match_duration owns pacing
-            _profile_defaults.get("num_step", 16), 2.0,
+            # Let the model choose its natural take length. Forcing the full
+            # source duration inside diffusion increases render work on long
+            # clips; the pitch-preserving atempo pass below aligns timing
+            # afterward without making synthesis itself slower.
+            None,
+            convert_steps, 2.0,
             1.0,         # speed
             True, _profile_defaults.get("postprocess_output", True),
             used_seed,
         )
+        render_started = time.perf_counter()
         try:
             audio_tensor = await run_on_gpu_pool_guarded(
                 _render,
@@ -434,6 +580,10 @@ async def convert_speech(
             ) from e
         except ValueError as e:
             raise HTTPException(status_code=400, detail=str(e)) from e
+        logger.info(
+            "voice conversion render completed in %.2fs (engine=%s, steps=%d)",
+            time.perf_counter() - render_started, backend.id, convert_steps,
+        )
         sample_rate = backend.sample_rate
 
         if match_duration and source_duration_s:
@@ -452,10 +602,14 @@ async def convert_speech(
             audio_tensor, sample_rate, text=text, history_mode="convert",
             ref_audio_path=cond["ref_audio_path"], language=language,
             instruct=cond["instruct"], resolved_profile_id=profile_id,
-            used_seed=used_seed, start_time=start_time,
+            used_seed=used_seed, start_time=generation_started_at,
             already_marked=True,
         )
 
+        logger.info(
+            "voice conversion finished in %.2fs (match_duration=%s)",
+            time.perf_counter() - request_started, match_duration,
+        )
         return {
             "id": meta["id"],
             "audio_url": f"/audio/{meta['filename']}",

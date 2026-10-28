@@ -499,7 +499,7 @@
     "steps": "Langkah-langkah",
     "voice_source": "Sumber Suara",
     "reference_audio": "Audio referensi",
-    "reference_hint": "Gunakan 5–15 detik ucapan yang jernih.",
+    "reference_hint": "Gunakan 5–15 detik ucapan yang jernih. Unggah audio hingga 5 menit; bagian 15 detik terbaik akan dipilih otomatis. Klip lebih dari 20 detik memerlukan model ucapan-ke-teks yang sudah terpasang.",
     "ref_usage_best_window": "Mesin ini memakai hingga {{seconds}} dtk — bagian terbaik dipilih otomatis.",
     "ref_usage_head": "Mesin ini memakai {{seconds}} dtk pertama dari klip ini.",
     "ref_usage_long": "Lebih panjang dari {{seconds}} dtk yang disarankan. Seluruh klip dikirim ke mesin.",
@@ -593,6 +593,18 @@
     "dialect_qingdao": "Dialek Qingdao",
     "dialect_dongbei": "Dialek Timur Laut",
     "style_placeholder": "misalnya berbisik",
+    "delivery_prompt": "Arahan pembacaan",
+    "delivery_prompt_placeholder": "mis. hangat dan stabil, dengan intonasi naik turun yang lembut; jeda pada koma.",
+    "delivery_prompt_help": "Mesin ini mendukung arahan bahasa alami. Identitas suara tetap berasal dari audio referensi.",
+    "describe_tags_only": "OmniVoice hanya menerima tag tetap: gender, usia, nada, bisikan, aksen Inggris, atau dialek Mandarin. Arahan bahasa alami dan prompt emosi tidak didukung. Pilih mesin dengan teks bebas atau dukungan emosi untuk menggunakan prompt.",
+    "reading_cues": "Petunjuk pembacaan",
+    "cue_slow": "Pelan",
+    "cue_fast": "Cepat",
+    "cue_emphasis": "Tekankan lembut",
+    "cue_pause": "Jeda",
+    "cue_whisper": "Bisikkan",
+    "reading_cue_help": "Gunakan [slow]...[/slow] atau [fast]...[/fast] untuk mengubah tempo bagian. [emphasis] sedikit memperlambat; [pause] menyisipkan jeda.",
+    "reading_cue_whisper_help": "Gunakan [whisper]...[/whisper] untuk membisikkan bagian ini.",
     "stop_playback": "Hentikan pemutaran",
     "describe_label": "Deskripsikan suara Anda",
     "describe_placeholder": "mis. a warm elderly British storyteller, slightly raspy",
@@ -704,7 +716,6 @@
     "no_video": "Tidak ada video yang dimuat",
     "segments": "segmen",
     "speakers": "pembicara",
-    "video_dubbing_studio": "Studio Sulih Suara Video",
     "drop_here": "Letakkan video atau audio di sini",
     "paste_url": "…atau tempel URL YouTube/video",
     "ingest": "Menelan",
@@ -936,7 +947,8 @@
     "segment_count_other": "{{count}} segmen",
     "glossary_terms_one": "Glosarium · {{count}} istilah",
     "glossary_terms_other": "Glosarium · {{count}} istilah",
-    "glossary_label": "Glosarium"
+    "glossary_label": "Glosarium",
+   "video_dubbing_studio": "Studio Sulih Suara Video"
   },
   "dub_workflow": {
     "preparing_audio": "Mempersiapkan audio…",
@@ -4321,9 +4333,9 @@
       "stems_hint": "Rekaman asli belum dipisahkan. Gunakan Komputer untuk trek latar yang terisolasi.",
       "timing": "Pengaturan waktu",
       "top": "Letakkan subtitel di atas",
-      "video_required": "Buat keluaran video sebelum mengekspor beberapa trek audio.",
       "white": "Putih",
-      "yellow": "Kuning"
+      "yellow": "Kuning",
+     "video_required": "Buat keluaran video sebelum mengekspor beberapa trek audio."
     },
     "handoff": {
       "title": "Pemindahan dan cadangan proyek",
@@ -4395,12 +4407,12 @@
     "tls_connection_dropped": "Koneksi aman terputus. Coba lagi; jika berulang, coba tanpa VPN.",
     "transformers_import": "Sebuah komponen ucapan gagal dimuat. Lihat penyebabnya di log backend.",
     "unsupported_video_url": "Tautan ini bukan halaman video. Tempel tautan video langsung atau unggah filenya.",
-    "video_download_bot_check": "YouTube meminta verifikasi dengan login. Lampirkan ekspor cookies.txt di Dubbing atau unggah filenya.",
-    "video_download_network": "Unduhan video terputus. Coba lagi; jika berulang, periksa jaringan Anda.",
-    "video_download_os_error": "Video tidak dapat disimpan. Periksa ruang kosong dan pastikan folder data dapat ditulisi.",
-    "video_drm_protected": "Video ini dilindungi DRM dan tidak dapat diunduh. Coba lagi nanti atau unggah filenya.",
     "windows_paging_file_too_small": "Windows memerlukan file paging yang lebih besar untuk model ini. Atur minimal 32 GB lalu mulai ulang, atau gunakan mesin yang lebih kecil.",
-    "windows_untrusted_mount": "Windows memblokir folder di drive yang tidak tepercaya. Pindahkan folder data ke drive lokal biasa."
+    "windows_untrusted_mount": "Windows memblokir folder di drive yang tidak tepercaya. Pindahkan folder data ke drive lokal biasa.",
+   "video_download_bot_check": "YouTube meminta verifikasi dengan login. Lampirkan ekspor cookies.txt di Dubbing atau unggah filenya.",
+   "video_download_network": "Unduhan video terputus. Coba lagi; jika berulang, periksa jaringan Anda.",
+   "video_download_os_error": "Video tidak dapat disimpan. Periksa ruang kosong dan pastikan folder data dapat ditulisi.",
+   "video_drm_protected": "Video ini dilindungi DRM dan tidak dapat diunduh. Coba lagi nanti atau unggah filenya."
   },
   "failureAction": {
     "add_transcript": "Tambah transkrip",

@@ -501,7 +501,7 @@
     "steps": "Étapes",
     "voice_source": "Source vocale",
     "reference_audio": "Audio de référence",
-    "reference_hint": "Utilisez 5 à 15 secondes de voix claire.",
+    "reference_hint": "Utilisez 5 à 15 secondes de voix claire. Importez jusqu’à 5 minutes ; le meilleur passage de 15 secondes sera choisi automatiquement. Les clips de plus de 20 secondes nécessitent un modèle de reconnaissance vocale installé.",
     "ref_usage_best_window": "Ce moteur utilise jusqu'à {{seconds}} s — le meilleur passage est choisi automatiquement.",
     "ref_usage_head": "Ce moteur utilise les {{seconds}} premières secondes de ce clip.",
     "ref_usage_long": "Plus long que les {{seconds}} s recommandées. Le clip entier est envoyé au moteur.",
@@ -595,6 +595,18 @@
     "dialect_qingdao": "Dialecte du Qingdao",
     "dialect_dongbei": "Dialecte du Nord-Est",
     "style_placeholder": "par ex. murmurer",
+    "delivery_prompt": "Consigne de lecture",
+    "delivery_prompt_placeholder": "ex. : chaleureuse et posée, avec de légères variations de ton et des pauses aux virgules.",
+    "delivery_prompt_help": "Ce moteur accepte les consignes en langage naturel. L’audio de référence fournit toujours l’identité vocale.",
+    "describe_tags_only": "OmniVoice accepte uniquement des étiquettes fixes : genre, âge, hauteur, chuchotement, accent anglais ou dialecte chinois. Il ne prend pas en charge les consignes en langage naturel ni les prompts émotionnels. Choisissez un moteur compatible avec le texte libre ou les émotions.",
+    "reading_cues": "Indications de lecture",
+    "cue_slow": "Lent",
+    "cue_fast": "Rapide",
+    "cue_emphasis": "Insister légèrement",
+    "cue_pause": "Pause",
+    "cue_whisper": "Chuchoter",
+    "reading_cue_help": "Utilisez [slow]...[/slow] ou [fast]...[/fast] pour changer le rythme d’un passage. [emphasis] le ralentit légèrement ; [pause] insère un silence.",
+    "reading_cue_whisper_help": "Utilisez [whisper]...[/whisper] pour chuchoter ce passage.",
     "stop_playback": "Arrêter la lecture",
     "describe_label": "Décrivez votre voix",
     "describe_placeholder": "p. ex. a warm elderly British storyteller, slightly raspy",
@@ -706,7 +718,6 @@
     "no_video": "Aucune vidéo chargée",
     "segments": "segments",
     "speakers": "haut-parleurs",
-    "video_dubbing_studio": "Studio de doublage vidéo",
     "drop_here": "Déposez la vidéo ou l'audio ici",
     "paste_url": "…ou collez l’URL YouTube/vidéo",
     "ingest": "Ingérer",
@@ -938,7 +949,8 @@
     "segment_count_other": "{{count}} segments",
     "glossary_terms_one": "Glossaire · {{count}} terme",
     "glossary_terms_other": "Glossaire · {{count}} termes",
-    "glossary_label": "Glossaire"
+    "glossary_label": "Glossaire",
+   "video_dubbing_studio": "Studio de doublage vidéo"
   },
   "dub_workflow": {
     "preparing_audio": "Préparation du son…",
@@ -4323,9 +4335,9 @@
       "stems_hint": "L’enregistrement original n’est pas séparé. Utilisez l’ordinateur pour isoler une piste de fond.",
       "timing": "Synchronisation",
       "top": "Placer les sous-titres en haut",
-      "video_required": "Générez une vidéo avant d’exporter plusieurs pistes audio.",
       "white": "Blanc",
-      "yellow": "Jaune"
+      "yellow": "Jaune",
+     "video_required": "Générez une vidéo avant d’exporter plusieurs pistes audio."
     },
     "handoff": {
       "title": "Transfert et sauvegarde de projets",
@@ -4397,12 +4409,12 @@
     "tls_connection_dropped": "La connexion sécurisée a été coupée. Réessayez ; si cela se répète, essayez sans VPN.",
     "transformers_import": "Un composant vocal n'a pas pu se charger. Consultez la cause dans le journal du backend.",
     "unsupported_video_url": "Ce lien n'est pas une page vidéo. Collez un lien direct vers la vidéo ou importez le fichier.",
-    "video_download_bot_check": "YouTube demande une vérification avec connexion. Joignez un export cookies.txt dans Doublage ou importez le fichier.",
-    "video_download_network": "Le téléchargement de la vidéo a été coupé. Réessayez ; si cela se répète, vérifiez votre réseau.",
-    "video_download_os_error": "La vidéo n'a pas pu être enregistrée. Vérifiez l'espace libre et que le dossier de données est accessible en écriture.",
-    "video_drm_protected": "Cette vidéo est protégée par DRM et ne peut pas être téléchargée. Réessayez plus tard ou importez le fichier.",
     "windows_paging_file_too_small": "Windows a besoin d'un fichier d'échange plus grand pour ce modèle. Réglez-le sur au moins 32 Go et redémarrez, ou utilisez un moteur plus léger.",
-    "windows_untrusted_mount": "Windows a bloqué un dossier sur un lecteur non approuvé. Déplacez le dossier de données vers un lecteur local ordinaire."
+    "windows_untrusted_mount": "Windows a bloqué un dossier sur un lecteur non approuvé. Déplacez le dossier de données vers un lecteur local ordinaire.",
+   "video_download_bot_check": "YouTube demande une vérification avec connexion. Joignez un export cookies.txt dans Doublage ou importez le fichier.",
+   "video_download_network": "Le téléchargement de la vidéo a été coupé. Réessayez ; si cela se répète, vérifiez votre réseau.",
+   "video_download_os_error": "La vidéo n\u0027a pas pu être enregistrée. Vérifiez l\u0027espace libre et que le dossier de données est accessible en écriture.",
+   "video_drm_protected": "Cette vidéo est protégée par DRM et ne peut pas être téléchargée. Réessayez plus tard ou importez le fichier."
   },
   "failureAction": {
     "add_transcript": "Ajouter la transcription",

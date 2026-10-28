@@ -514,7 +514,7 @@
     "steps": "步数",
     "voice_source": "声音来源",
     "reference_audio": "参考音频",
-    "reference_hint": "使用 5–15 秒清晰语音。",
+    "reference_hint": "使用 5–15 秒清晰语音。最多可上传 5 分钟，系统会自动选择最佳的 15 秒片段。超过 20 秒的音频需要安装语音识别模型。",
     "ref_usage_best_window": "此引擎最多使用 {{seconds}} 秒，会自动选取最佳片段。",
     "ref_usage_head": "此引擎使用该片段的前 {{seconds}} 秒。",
     "ref_usage_long": "超过建议的 {{seconds}} 秒。整段音频都会发送给引擎。",
@@ -608,6 +608,18 @@
     "dialect_qingdao": "青岛话",
     "dialect_dongbei": "东北话",
     "style_placeholder": "例如：低语",
+    "delivery_prompt": "朗读指令",
+    "delivery_prompt_placeholder": "例如：温暖平稳地朗读，语调轻柔起伏，并在逗号处停顿。",
+    "delivery_prompt_help": "此引擎支持自然语言指令。声音特征仍由参考音频提供。",
+    "describe_tags_only": "OmniVoice 仅接受固定标签：性别、年龄、音高、耳语、英语口音或中文方言。它不支持自然语言指令或情绪提示词。若要使用提示词，请选择支持自由文本或情绪控制的引擎。",
+    "reading_cues": "朗读标记",
+    "cue_slow": "慢速",
+    "cue_fast": "快速",
+    "cue_emphasis": "轻微强调",
+    "cue_pause": "停顿",
+    "cue_whisper": "耳语",
+    "reading_cue_help": "用 [slow]...[/slow] 或 [fast]...[/fast] 改变片段语速。[emphasis] 会稍微放慢以示强调；[pause] 会插入静音。",
+    "reading_cue_whisper_help": "使用 [whisper]...[/whisper] 让这一段以耳语方式朗读。",
     "stop_playback": "停止播放",
     "describe_label": "描述你想要的声音",
     "describe_placeholder": "例如：中年男性，低音调，四川话",
@@ -719,7 +731,6 @@
     "no_video": "未加载视频",
     "segments": "片段",
     "speakers": "说话人",
-    "video_dubbing_studio": "视频配音工作室",
     "drop_here": "拖放视频或音频文件",
     "paste_url": "…或粘贴 YouTube / 视频链接",
     "ingest": "导入",
@@ -951,7 +962,8 @@
     "segment_count_other": "{{count}} 个片段",
     "glossary_terms_one": "术语表 · {{count}} 个术语",
     "glossary_terms_other": "术语表 · {{count}} 个术语",
-    "glossary_label": "术语表"
+    "glossary_label": "术语表",
+   "video_dubbing_studio": "视频配音工作室"
   },
   "dub_workflow": {
     "preparing_audio": "正在准备音频...",
@@ -4321,9 +4333,9 @@
       "stems_hint": "原始录音尚未分离。请使用电脑分离背景音轨。",
       "timing": "时间匹配",
       "top": "将字幕置于顶部",
-      "video_required": "请先生成视频再导出多条音轨。",
       "white": "白色",
-      "yellow": "黄色"
+      "yellow": "黄色",
+     "video_required": "请先生成视频再导出多条音轨。"
     },
     "handoff": {
       "title": "项目传输与备份",
@@ -4395,12 +4407,12 @@
     "tls_connection_dropped": "安全连接已断开。请重试；若反复出现，请关闭 VPN 再试。",
     "transformers_import": "语音组件加载失败。请在后端日志中查看原因。",
     "unsupported_video_url": "此链接不是视频页面。请粘贴视频直链或上传文件。",
-    "video_download_bot_check": "YouTube 要求登录验证。请在配音中附加导出的 cookies.txt，或上传文件。",
-    "video_download_network": "视频下载中断。请重试；若反复出现，请检查网络。",
-    "video_download_os_error": "无法保存视频。请检查可用空间及数据文件夹是否可写。",
-    "video_drm_protected": "此视频受 DRM 保护，无法下载。请稍后再试或上传文件。",
     "windows_paging_file_too_small": "此模型需要更大的 Windows 页面文件。请设置为至少 32 GB 并重启，或改用更小的引擎。",
-    "windows_untrusted_mount": "Windows 阻止了不受信任驱动器上的文件夹。请将数据文件夹移到普通本地驱动器。"
+    "windows_untrusted_mount": "Windows 阻止了不受信任驱动器上的文件夹。请将数据文件夹移到普通本地驱动器。",
+   "video_download_bot_check": "YouTube 要求登录验证。请在配音中附加导出的 cookies.txt，或上传文件。",
+   "video_download_network": "视频下载中断。请重试；若反复出现，请检查网络。",
+   "video_download_os_error": "无法保存视频。请检查可用空间及数据文件夹是否可写。",
+   "video_drm_protected": "此视频受 DRM 保护，无法下载。请稍后再试或上传文件。"
   },
   "failureAction": {
     "add_transcript": "添加转录文本",

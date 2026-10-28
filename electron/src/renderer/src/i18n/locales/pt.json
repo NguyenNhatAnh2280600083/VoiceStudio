@@ -501,7 +501,7 @@
     "steps": "Passos",
     "voice_source": "Fonte de voz",
     "reference_audio": "Áudio de referência",
-    "reference_hint": "Use de 5 a 15 segundos de fala nítida.",
+    "reference_hint": "Use de 5 a 15 segundos de fala nítida. Envie até 5 minutos; o melhor trecho de 15 segundos será escolhido automaticamente. Clipes com mais de 20 segundos exigem um modelo de reconhecimento de fala instalado.",
     "ref_usage_best_window": "Este motor usa até {{seconds}} s — o melhor trecho é escolhido automaticamente.",
     "ref_usage_head": "Este motor usa os primeiros {{seconds}} s deste clipe.",
     "ref_usage_long": "Mais longo que os {{seconds}} s recomendados. O clipe inteiro é enviado ao motor.",
@@ -595,6 +595,18 @@
     "dialect_qingdao": "Dialeto de Qingdao",
     "dialect_dongbei": "Dialeto do nordeste",
     "style_placeholder": "por exemplo sussurrar",
+    "delivery_prompt": "Instrução de leitura",
+    "delivery_prompt_placeholder": "ex.: leia de forma calorosa e constante, com entonação suave e pausas nas vírgulas.",
+    "delivery_prompt_help": "Este mecanismo aceita instruções em linguagem natural. A identidade vocal continua vindo do áudio de referência.",
+    "describe_tags_only": "O OmniVoice aceita apenas etiquetas fixas: gênero, idade, tom, sussurro, sotaque inglês ou dialeto chinês. Não aceita instruções em linguagem natural nem prompts de emoção. Escolha um mecanismo com texto livre ou suporte a emoções para usar prompts.",
+    "reading_cues": "Indicações de leitura",
+    "cue_slow": "Devagar",
+    "cue_fast": "Rápido",
+    "cue_emphasis": "Ênfase leve",
+    "cue_pause": "Pausa",
+    "cue_whisper": "Sussurrar",
+    "reading_cue_help": "Use [slow]...[/slow] ou [fast]...[/fast] para mudar o ritmo de um trecho. [emphasis] desacelera um pouco; [pause] insere silêncio.",
+    "reading_cue_whisper_help": "Use [whisper]...[/whisper] para sussurrar este trecho.",
     "stop_playback": "Parar reprodução",
     "describe_label": "Descreva a sua voz",
     "describe_placeholder": "ex.: a warm elderly British storyteller, slightly raspy",
@@ -706,7 +718,6 @@
     "no_video": "Nenhum vídeo carregado",
     "segments": "segmentos",
     "speakers": "alto-falantes",
-    "video_dubbing_studio": "Estúdio de Dublagem de Vídeo",
     "drop_here": "Solte vídeo ou áudio aqui",
     "paste_url": "…ou cole o URL do YouTube/vídeo",
     "ingest": "Ingerir",
@@ -938,7 +949,8 @@
     "segment_count_other": "{{count}} segmentos",
     "glossary_terms_one": "Glossário · {{count}} termo",
     "glossary_terms_other": "Glossário · {{count}} termos",
-    "glossary_label": "Glossário"
+    "glossary_label": "Glossário",
+   "video_dubbing_studio": "Estúdio de Dublagem de Vídeo"
   },
   "dub_workflow": {
     "preparing_audio": "Preparando áudio…",
@@ -4323,9 +4335,9 @@
       "stems_hint": "A gravação original não está separada. Use o computador para uma faixa de fundo isolada.",
       "timing": "Sincronização",
       "top": "Posicionar legendas no topo",
-      "video_required": "Gere um vídeo antes de exportar várias faixas de áudio.",
       "white": "Branco",
-      "yellow": "Amarelo"
+      "yellow": "Amarelo",
+     "video_required": "Gere um vídeo antes de exportar várias faixas de áudio."
     },
     "handoff": {
       "title": "Transferência e cópia de projetos",
@@ -4397,12 +4409,12 @@
     "tls_connection_dropped": "A conexão segura caiu. Tente novamente; se repetir, tente sem VPN.",
     "transformers_import": "Um componente de fala não carregou. Veja a causa no log do backend.",
     "unsupported_video_url": "Este link não é uma página de vídeo. Cole um link direto do vídeo ou envie o arquivo.",
-    "video_download_bot_check": "O YouTube pede uma verificação com login. Anexe um cookies.txt exportado em Dublagem ou envie o arquivo.",
-    "video_download_network": "O download do vídeo caiu. Tente novamente; se repetir, verifique sua rede.",
-    "video_download_os_error": "Não foi possível salvar o vídeo. Verifique o espaço livre e se a pasta de dados permite gravação.",
-    "video_drm_protected": "Este vídeo tem proteção DRM e não pode ser baixado. Tente mais tarde ou envie o arquivo.",
     "windows_paging_file_too_small": "O Windows precisa de um arquivo de paginação maior para este modelo. Defina pelo menos 32 GB e reinicie, ou use um mecanismo menor.",
-    "windows_untrusted_mount": "O Windows bloqueou uma pasta em uma unidade não confiável. Mova a pasta de dados para uma unidade local comum."
+    "windows_untrusted_mount": "O Windows bloqueou uma pasta em uma unidade não confiável. Mova a pasta de dados para uma unidade local comum.",
+   "video_download_bot_check": "O YouTube pede uma verificação com login. Anexe um cookies.txt exportado em Dublagem ou envie o arquivo.",
+   "video_download_network": "O download do vídeo caiu. Tente novamente; se repetir, verifique sua rede.",
+   "video_download_os_error": "Não foi possível salvar o vídeo. Verifique o espaço livre e se a pasta de dados permite gravação.",
+   "video_drm_protected": "Este vídeo tem proteção DRM e não pode ser baixado. Tente mais tarde ou envie o arquivo."
   },
   "failureAction": {
     "add_transcript": "Adicionar transcrição",

@@ -16,10 +16,10 @@ import { createStreamingPreview } from '@/lib/audio/streaming-preview';
 /** Upper end of the recommended 5–15 s reference; longer clips get an engine-aware note. */
 export const CLONE_MAX_SECONDS = 15;
 /**
- * Hard cap. OmniVoice's automatic passage selection examines at most five 15 s
+ * Hard cap. OmniVoice's automatic passage selection examines at most twenty 15 s
  * windows (omnivoice/utils/audio.py CLONE_REF_MAX_WINDOWS) — rejected outright.
  */
-export const REF_HARD_MAX_SECONDS = 75;
+export const REF_HARD_MAX_SECONDS = 300;
 
 // ── Instruct whitelist ─────────────────────────────────────────────────────
 // The engine validator (omnivoice/models/omnivoice.py::_resolve_instruct)

@@ -1037,7 +1037,7 @@ class OmniVoice(PreTrainedModel):
             raise ValueError(clone_ref_transcript_too_long_message(ref_duration))
         if ref_text is None and ref_duration > CLONE_REF_WINDOW_SECONDS:
             # Transcript-free automatic selection examines every passage, but
-            # caps the work at five bounded ASR calls. Longer references need
+            # caps the work at a bounded number of ASR calls. Longer references need
             # an explicit user-selected passage rather than a lossy sampling
             # policy that could silently miss speech between fixed windows.
             max_samples = int(CLONE_REF_WINDOW_SECONDS * self.sampling_rate)
@@ -1046,7 +1046,8 @@ class OmniVoice(PreTrainedModel):
                 raise ValueError(
                     f"{CLONE_REF_TOO_LONG_MARKER} Reference audio is "
                     f"{ref_duration:.1f} seconds long; automatic transcript-free "
-                    "selection supports at most 75 seconds. Trim the audio to a "
+                    f"selection supports at most {CLONE_REF_MAX_SECONDS:.0f} seconds. "
+                    "Trim the audio to a "
                     "3-10 second speech passage."
                 )
 

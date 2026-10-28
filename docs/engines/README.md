@@ -50,7 +50,7 @@ approval), [Windows](../install/windows.md), [Linux](../install/linux.md),
 
 ### Reference clip length
 
-Voice Clone accepts clips up to 75 seconds and recommends 5–15 seconds of clean
+Voice Clone accepts clips up to 300 seconds and recommends 5–15 seconds of clean
 speech. How much of a longer clip reaches the model depends on the engine; the
 Voice Clone screen says which applies, and `GET /engines` reports it per engine
 as `max_ref_seconds` and `ref_strategy`.

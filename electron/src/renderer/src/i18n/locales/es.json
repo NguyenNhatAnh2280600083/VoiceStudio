@@ -501,7 +501,7 @@
     "steps": "Pasos",
     "voice_source": "Fuente de voz",
     "reference_audio": "Audio de referencia",
-    "reference_hint": "Usa entre 5 y 15 segundos de voz clara.",
+    "reference_hint": "Usa entre 5 y 15 segundos de voz clara. Puedes subir hasta 5 minutos; se elegirá automáticamente el mejor fragmento de 15 segundos. Los clips de más de 20 segundos requieren un modelo de voz a texto instalado.",
     "ref_usage_best_window": "Este motor usa hasta {{seconds}} s: el mejor fragmento se elige automáticamente.",
     "ref_usage_head": "Este motor usa los primeros {{seconds}} s de este clip.",
     "ref_usage_long": "Más largo que los {{seconds}} s recomendados. Se envía el clip completo al motor.",
@@ -595,6 +595,18 @@
     "dialect_qingdao": "Dialecto de Qingdao",
     "dialect_dongbei": "Dialecto del noreste",
     "style_placeholder": "por ej. susurrar",
+    "delivery_prompt": "Indicación de lectura",
+    "delivery_prompt_placeholder": "p. ej., cálida y pausada, con suaves cambios de entonación y pausas en las comas.",
+    "delivery_prompt_help": "Este motor admite indicaciones en lenguaje natural. El audio de referencia sigue aportando la identidad de la voz.",
+    "describe_tags_only": "OmniVoice solo acepta etiquetas fijas: género, edad, tono, susurro, acento inglés o dialecto chino. No admite indicaciones en lenguaje natural ni prompts de emoción. Elige un motor con texto libre o control de emociones para usar prompts.",
+    "reading_cues": "Indicaciones de lectura",
+    "cue_slow": "Despacio",
+    "cue_fast": "Rápido",
+    "cue_emphasis": "Énfasis suave",
+    "cue_pause": "Pausa",
+    "cue_whisper": "Susurrar",
+    "reading_cue_help": "Usa [slow]...[/slow] o [fast]...[/fast] para cambiar el ritmo de un fragmento. [emphasis] lo ralentiza un poco; [pause] inserta silencio.",
+    "reading_cue_whisper_help": "Usa [whisper]...[/whisper] para susurrar este fragmento.",
     "stop_playback": "Detener reproducción",
     "describe_label": "Describe tu voz",
     "describe_placeholder": "p. ej. a warm elderly British storyteller, slightly raspy",
@@ -706,7 +718,6 @@
     "no_video": "No hay vídeo cargado",
     "segments": "segmentos",
     "speakers": "altavoces",
-    "video_dubbing_studio": "Estudio de doblaje de vídeo",
     "drop_here": "Suelta vídeo o audio aquí",
     "paste_url": "…o pegue la URL de YouTube/vídeo",
     "ingest": "Ingerir",
@@ -938,7 +949,8 @@
     "segment_count_other": "{{count}} segmentos",
     "glossary_terms_one": "Glosario · {{count}} término",
     "glossary_terms_other": "Glosario · {{count}} términos",
-    "glossary_label": "Glosario"
+    "glossary_label": "Glosario",
+   "video_dubbing_studio": "Estudio de doblaje de vídeo"
   },
   "dub_workflow": {
     "preparing_audio": "Preparando audio…",
@@ -4323,9 +4335,9 @@
       "stems_hint": "La grabación original no está separada. Usa el ordenador para aislar la pista de fondo.",
       "timing": "Sincronización",
       "top": "Colocar subtítulos arriba",
-      "video_required": "Genera un vídeo antes de exportar varias pistas de audio.",
       "white": "Blanco",
-      "yellow": "Amarillo"
+      "yellow": "Amarillo",
+     "video_required": "Genera un vídeo antes de exportar varias pistas de audio."
     },
     "handoff": {
       "title": "Transferencia y copia de proyectos",
@@ -4397,12 +4409,12 @@
     "tls_connection_dropped": "La conexión segura se cortó. Reintenta; si se repite, prueba sin VPN.",
     "transformers_import": "Un componente de voz no se pudo cargar. Revisa la causa en el registro del backend.",
     "unsupported_video_url": "Este enlace no es una página de video. Pega un enlace directo al video o sube el archivo.",
-    "video_download_bot_check": "YouTube pide una verificación con sesión iniciada. Adjunta un cookies.txt exportado en Doblaje o sube el archivo.",
-    "video_download_network": "La descarga del video se cortó. Reintenta; si se repite, revisa tu red.",
-    "video_download_os_error": "No se pudo guardar el video. Comprueba el espacio libre y que la carpeta de datos admita escritura.",
-    "video_drm_protected": "Este video tiene protección DRM y no se puede descargar. Inténtalo más tarde o sube el archivo.",
     "windows_paging_file_too_small": "Windows necesita un archivo de paginación mayor para este modelo. Ponlo en al menos 32 GB y reinicia, o usa un motor más pequeño.",
-    "windows_untrusted_mount": "Windows bloqueó una carpeta en una unidad no confiable. Mueve la carpeta de datos a una unidad local normal."
+    "windows_untrusted_mount": "Windows bloqueó una carpeta en una unidad no confiable. Mueve la carpeta de datos a una unidad local normal.",
+   "video_download_bot_check": "YouTube pide una verificación con sesión iniciada. Adjunta un cookies.txt exportado en Doblaje o sube el archivo.",
+   "video_download_network": "La descarga del video se cortó. Reintenta; si se repite, revisa tu red.",
+   "video_download_os_error": "No se pudo guardar el video. Comprueba el espacio libre y que la carpeta de datos admita escritura.",
+   "video_drm_protected": "Este video tiene protección DRM y no se puede descargar. Inténtalo más tarde o sube el archivo."
   },
   "failureAction": {
     "add_transcript": "Añadir transcripción",

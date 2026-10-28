@@ -53,15 +53,15 @@ describe('setReferenceFile', () => {
   });
 
   it('accepts exactly REF_HARD_MAX_SECONDS and rejects beyond it without touching state', async () => {
-    probeAudioDuration.mockResolvedValue(75);
+    probeAudioDuration.mockResolvedValue(300);
     const kept = file('kept.wav');
     await setReferenceFile(kept);
     expect(referenceStore.state.file).toBe(kept);
     const urlBefore = referenceStore.state.objectUrl;
 
-    probeAudioDuration.mockResolvedValue(75.5);
+    probeAudioDuration.mockResolvedValue(300.5);
     const result = await setReferenceFile(file('too-long.wav'));
-    expect(result).toEqual({ ok: false, durationSeconds: 75.5, tooLong: true });
+    expect(result).toEqual({ ok: false, durationSeconds: 300.5, tooLong: true });
     expect(referenceStore.state.file).toBe(kept);
     expect(referenceStore.state.objectUrl).toBe(urlBefore);
   });

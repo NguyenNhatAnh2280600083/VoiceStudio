@@ -39,7 +39,7 @@ afterEach(() => {
 describe('constants', () => {
   it('exposes the clip limits', () => {
     expect(CLONE_MAX_SECONDS).toBe(15);
-    expect(REF_HARD_MAX_SECONDS).toBe(75);
+    expect(REF_HARD_MAX_SECONDS).toBe(300);
   });
 });
 

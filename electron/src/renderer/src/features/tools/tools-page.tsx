@@ -91,7 +91,7 @@ export function ToolsPage() {
             onClick={() => setConverting(true)}
           >
             <AudioWaveformIcon />
-            {t('convert.convert')}
+            {t('convert.nav_label')}
           </Button>
         </SecondarySidebar>
         <section className="min-w-0 flex-1 overflow-y-auto px-6 py-8">

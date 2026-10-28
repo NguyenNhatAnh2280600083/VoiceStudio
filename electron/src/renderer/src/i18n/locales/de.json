@@ -499,7 +499,7 @@
     "steps": "Schritte",
     "voice_source": "Sprachquelle",
     "reference_audio": "Referenzaudio",
-    "reference_hint": "Verwende 5–15 Sekunden klare Sprache.",
+    "reference_hint": "Verwende 5–15 Sekunden klare Sprache. Lade bis zu 5 Minuten hoch; der beste 15-Sekunden-Abschnitt wird automatisch ausgewählt. Für Clips über 20 Sekunden ist ein installiertes Sprach-zu-Text-Modell erforderlich.",
     "ref_usage_best_window": "Diese Engine nutzt bis zu {{seconds}} s – die beste Passage wird automatisch gewählt.",
     "ref_usage_head": "Diese Engine nutzt die ersten {{seconds}} s dieses Clips.",
     "ref_usage_long": "Länger als die empfohlenen {{seconds}} s. Der ganze Clip geht an die Engine.",
@@ -593,6 +593,18 @@
     "dialect_qingdao": "Qingdao-Dialekt",
     "dialect_dongbei": "Nordostchinesischer Dialekt",
     "style_placeholder": "z.B. flüstern",
+    "delivery_prompt": "Sprechanweisung",
+    "delivery_prompt_placeholder": "z. B. warm und ruhig sprechen, mit sanften Tonhöhenbewegungen und Pausen an Kommas.",
+    "delivery_prompt_help": "Diese Engine unterstützt natürlichsprachliche Anweisungen. Die Referenzaufnahme liefert weiterhin die Stimmidentität.",
+    "describe_tags_only": "OmniVoice akzeptiert nur feste Tags für Geschlecht, Alter, Tonhöhe, Flüstern, englischen Akzent oder chinesischen Dialekt. Natürlichsprachliche Anweisungen und Emotionen werden nicht unterstützt. Verwende dafür eine Engine mit Freitext- oder Emotionssteuerung.",
+    "reading_cues": "Lesehinweise",
+    "cue_slow": "Langsam",
+    "cue_fast": "Schnell",
+    "cue_emphasis": "Leichte Betonung",
+    "cue_pause": "Pause",
+    "cue_whisper": "Flüstern",
+    "reading_cue_help": "Mit [slow]...[/slow] oder [fast]...[/fast] änderst du das Tempo eines Abschnitts. [emphasis] verlangsamt leicht zur Betonung, [pause] fügt eine Pause ein.",
+    "reading_cue_whisper_help": "Verwende [whisper]...[/whisper], um diese Passage flüstern zu lassen.",
     "stop_playback": "Wiedergabe stoppen",
     "describe_label": "Beschreibe deine Stimme",
     "describe_placeholder": "z. B. a warm elderly British storyteller, slightly raspy",
@@ -704,7 +716,6 @@
     "no_video": "Kein Video geladen",
     "segments": "Segmente",
     "speakers": "Lautsprecher",
-    "video_dubbing_studio": "Video-Synchronisationsstudio",
     "drop_here": "Legen Sie hier Video oder Audio ab",
     "paste_url": "…oder fügen Sie die YouTube-/Video-URL ein",
     "ingest": "Verschlucken",
@@ -936,7 +947,8 @@
     "segment_count_other": "{{count}} Segmente",
     "glossary_terms_one": "Glossar · {{count}} Begriff",
     "glossary_terms_other": "Glossar · {{count}} Begriffe",
-    "glossary_label": "Glossar"
+    "glossary_label": "Glossar",
+   "video_dubbing_studio": "Video-Synchronisationsstudio"
   },
   "dub_workflow": {
     "preparing_audio": "Audio wird vorbereitet…",
@@ -4321,9 +4333,9 @@
       "stems_hint": "Die Originalaufnahme ist nicht getrennt. Nutze den Computer für eine isolierte Hintergrundspur.",
       "timing": "Timing",
       "top": "Untertitel oben platzieren",
-      "video_required": "Erzeuge vor dem Export mehrerer Audiospuren eine Videoausgabe.",
       "white": "Weiß",
-      "yellow": "Gelb"
+      "yellow": "Gelb",
+     "video_required": "Erzeuge vor dem Export mehrerer Audiospuren eine Videoausgabe."
     },
     "handoff": {
       "title": "Projektübertragung und Sicherung",
@@ -4395,12 +4407,12 @@
     "tls_connection_dropped": "Die sichere Verbindung wurde getrennt. Versuche es erneut; passiert es wieder, versuche es ohne VPN.",
     "transformers_import": "Eine Sprachkomponente konnte nicht geladen werden. Die Ursache steht im Backend-Protokoll.",
     "unsupported_video_url": "Dieser Link ist keine Videoseite. Füge einen direkten Videolink ein oder lade die Datei hoch.",
-    "video_download_bot_check": "YouTube verlangt eine Prüfung mit Anmeldung. Hänge in Vertonung einen cookies.txt-Export an oder lade die Datei hoch.",
-    "video_download_network": "Der Video-Download wurde abgebrochen. Versuche es erneut; passiert es wieder, prüfe dein Netzwerk.",
-    "video_download_os_error": "Das Video konnte nicht gespeichert werden. Prüfe den freien Speicher und ob der Datenordner beschreibbar ist.",
-    "video_drm_protected": "Dieses Video ist DRM-geschützt und kann nicht heruntergeladen werden. Versuche es später oder lade die Datei hoch.",
     "windows_paging_file_too_small": "Windows braucht für dieses Modell eine größere Auslagerungsdatei. Stelle mindestens 32 GB ein und starte neu, oder nutze eine kleinere Engine.",
-    "windows_untrusted_mount": "Windows hat einen Ordner auf einem nicht vertrauenswürdigen Laufwerk blockiert. Verschiebe den Datenordner auf ein normales lokales Laufwerk."
+    "windows_untrusted_mount": "Windows hat einen Ordner auf einem nicht vertrauenswürdigen Laufwerk blockiert. Verschiebe den Datenordner auf ein normales lokales Laufwerk.",
+   "video_download_bot_check": "YouTube verlangt eine Prüfung mit Anmeldung. Hänge in Vertonung einen cookies.txt-Export an oder lade die Datei hoch.",
+   "video_download_network": "Der Video-Download wurde abgebrochen. Versuche es erneut; passiert es wieder, prüfe dein Netzwerk.",
+   "video_download_os_error": "Das Video konnte nicht gespeichert werden. Prüfe den freien Speicher und ob der Datenordner beschreibbar ist.",
+   "video_drm_protected": "Dieses Video ist DRM-geschützt und kann nicht heruntergeladen werden. Versuche es später oder lade die Datei hoch."
   },
   "failureAction": {
     "add_transcript": "Transkript hinzufügen",

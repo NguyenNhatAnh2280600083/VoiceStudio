@@ -499,7 +499,7 @@
     "steps": "Stappen",
     "voice_source": "Stembron",
     "reference_audio": "Referentieaudio",
-    "reference_hint": "Gebruik 5–15 seconden heldere spraak.",
+    "reference_hint": "Gebruik 5–15 seconden heldere spraak. Upload maximaal 5 minuten; het beste fragment van 15 seconden wordt automatisch gekozen. Clips langer dan 20 seconden vereisen een geïnstalleerd spraakherkenningsmodel.",
     "ref_usage_best_window": "Deze engine gebruikt tot {{seconds}} s — de beste passage wordt automatisch gekozen.",
     "ref_usage_head": "Deze engine gebruikt de eerste {{seconds}} s van deze clip.",
     "ref_usage_long": "Langer dan de aanbevolen {{seconds}} s. De hele clip gaat naar de engine.",
@@ -593,6 +593,18 @@
     "dialect_qingdao": "Qingdao-dialect",
     "dialect_dongbei": "Noordoost-Chinees dialect",
     "style_placeholder": "bijv. fluisteren",
+    "delivery_prompt": "Leesinstructie",
+    "delivery_prompt_placeholder": "bijv. warm en rustig, met subtiele intonatie en pauzes bij komma’s.",
+    "delivery_prompt_help": "Deze engine ondersteunt instructies in gewone taal. De referentieaudio blijft de stemidentiteit bepalen.",
+    "describe_tags_only": "OmniVoice accepteert alleen vaste tags: geslacht, leeftijd, toonhoogte, fluisteren, Engels accent of Chinees dialect. Instructies in gewone taal en emotieprompts worden niet ondersteund. Kies een engine met vrije tekst of emotieondersteuning voor prompts.",
+    "reading_cues": "Leesaanwijzingen",
+    "cue_slow": "Langzaam",
+    "cue_fast": "Snel",
+    "cue_emphasis": "Licht benadrukken",
+    "cue_pause": "Pauze",
+    "cue_whisper": "Fluisteren",
+    "reading_cue_help": "Gebruik [slow]...[/slow] of [fast]...[/fast] om het tempo van een passage te wijzigen. [emphasis] vertraagt licht; [pause] voegt stilte in.",
+    "reading_cue_whisper_help": "Gebruik [whisper]...[/whisper] om deze passage te fluisteren.",
     "stop_playback": "Afspelen stoppen",
     "describe_label": "Beschrijf je stem",
     "describe_placeholder": "bijv. a warm elderly British storyteller, slightly raspy",
@@ -704,7 +716,6 @@
     "no_video": "Geen video geladen",
     "segments": "segmenten",
     "speakers": "luidsprekers",
-    "video_dubbing_studio": "Video-nasynchronisatiestudio",
     "drop_here": "Zet hier video of audio neer",
     "paste_url": "…of plak de YouTube-/video-URL",
     "ingest": "Innemen",
@@ -936,7 +947,8 @@
     "segment_count_other": "{{count}} segmenten",
     "glossary_terms_one": "Woordenlijst · {{count}} term",
     "glossary_terms_other": "Woordenlijst · {{count}} termen",
-    "glossary_label": "Woordenlijst"
+    "glossary_label": "Woordenlijst",
+   "video_dubbing_studio": "Video-nasynchronisatiestudio"
   },
   "dub_workflow": {
     "preparing_audio": "Audio voorbereiden…",
@@ -4321,9 +4333,9 @@
       "stems_hint": "De oorspronkelijke opname is niet gescheiden. Gebruik de computer voor een geïsoleerd achtergrondspoor.",
       "timing": "Timing",
       "top": "Ondertitels bovenaan plaatsen",
-      "video_required": "Genereer een video voordat je meerdere audiosporen exporteert.",
       "white": "Wit",
-      "yellow": "Geel"
+      "yellow": "Geel",
+     "video_required": "Genereer een video voordat je meerdere audiosporen exporteert."
     },
     "handoff": {
       "title": "Projectoverdracht en back-up",
@@ -4395,12 +4407,12 @@
     "tls_connection_dropped": "De beveiligde verbinding werd verbroken. Probeer opnieuw; gebeurt het weer, probeer het zonder VPN.",
     "transformers_import": "Een spraakonderdeel kon niet laden. Bekijk de oorzaak in het backendlogboek.",
     "unsupported_video_url": "Deze link is geen videopagina. Plak een directe videolink of upload het bestand.",
-    "video_download_bot_check": "YouTube vraagt om een controle met aanmelding. Voeg in Nasynchronisatie een cookies.txt-export toe of upload het bestand.",
-    "video_download_network": "De videodownload werd onderbroken. Probeer opnieuw; gebeurt het weer, controleer je netwerk.",
-    "video_download_os_error": "De video kon niet worden opgeslagen. Controleer de vrije ruimte en of de gegevensmap beschrijfbaar is.",
-    "video_drm_protected": "Deze video is met DRM beveiligd en kan niet worden gedownload. Probeer het later of upload het bestand.",
     "windows_paging_file_too_small": "Windows heeft een groter wisselbestand nodig voor dit model. Stel minstens 32 GB in en herstart, of gebruik een kleinere engine.",
-    "windows_untrusted_mount": "Windows blokkeerde een map op een niet-vertrouwd station. Verplaats de gegevensmap naar een gewoon lokaal station."
+    "windows_untrusted_mount": "Windows blokkeerde een map op een niet-vertrouwd station. Verplaats de gegevensmap naar een gewoon lokaal station.",
+   "video_download_bot_check": "YouTube vraagt om een controle met aanmelding. Voeg in Nasynchronisatie een cookies.txt-export toe of upload het bestand.",
+   "video_download_network": "De videodownload werd onderbroken. Probeer opnieuw; gebeurt het weer, controleer je netwerk.",
+   "video_download_os_error": "De video kon niet worden opgeslagen. Controleer de vrije ruimte en of de gegevensmap beschrijfbaar is.",
+   "video_drm_protected": "Deze video is met DRM beveiligd en kan niet worden gedownload. Probeer het later of upload het bestand."
   },
   "failureAction": {
     "add_transcript": "Transcript toevoegen",

@@ -499,7 +499,7 @@
     "steps": "步驟",
     "voice_source": "語音來源",
     "reference_audio": "參考音訊",
-    "reference_hint": "使用 5–15 秒清晰語音。",
+    "reference_hint": "使用 5–15 秒清晰語音。最多可上傳 5 分鐘，系統會自動選擇最佳的 15 秒片段。超過 20 秒的音訊需要安裝語音辨識模型。",
     "ref_usage_best_window": "此引擎最多使用 {{seconds}} 秒，會自動選取最佳片段。",
     "ref_usage_head": "此引擎使用該片段的前 {{seconds}} 秒。",
     "ref_usage_long": "超過建議的 {{seconds}} 秒。整段音訊都會傳送給引擎。",
@@ -593,6 +593,18 @@
     "dialect_qingdao": "青島話",
     "dialect_dongbei": "東北話",
     "style_placeholder": "例如耳語",
+    "delivery_prompt": "朗讀指示",
+    "delivery_prompt_placeholder": "例如：溫暖平穩地朗讀，語調輕柔起伏，並在逗號處停頓。",
+    "delivery_prompt_help": "此引擎支援自然語言指示。聲音特徵仍由參考音訊提供。",
+    "describe_tags_only": "OmniVoice 僅接受固定標籤：性別、年齡、音高、耳語、英語口音或中文方言。它不支援自然語言指示或情緒提示詞。若要使用提示詞，請選擇支援自由文字或情緒控制的引擎。",
+    "reading_cues": "朗讀標記",
+    "cue_slow": "慢速",
+    "cue_fast": "快速",
+    "cue_emphasis": "輕微強調",
+    "cue_pause": "停頓",
+    "cue_whisper": "耳語",
+    "reading_cue_help": "用 [slow]...[/slow] 或 [fast]...[/fast] 改變片段語速。[emphasis] 會稍微放慢以示強調；[pause] 會插入靜音。",
+    "reading_cue_whisper_help": "使用 [whisper]...[/whisper] 讓這一段以耳語方式朗讀。",
     "stop_playback": "停止播放",
     "describe_label": "描述你想要的聲音",
     "describe_placeholder": "例如：a warm elderly British storyteller, slightly raspy",
@@ -704,7 +716,6 @@
     "no_video": "沒有加載視頻",
     "segments": "段",
     "speakers": "揚聲器",
-    "video_dubbing_studio": "視訊配音工作室",
     "drop_here": "將視訊或音訊拖放到此處",
     "paste_url": "…或貼上 YouTube/影片 URL",
     "ingest": "攝取",
@@ -936,7 +947,8 @@
     "segment_count_other": "{{count}} 個片段",
     "glossary_terms_one": "術語表 · {{count}} 個術語",
     "glossary_terms_other": "術語表 · {{count}} 個術語",
-    "glossary_label": "術語表"
+    "glossary_label": "術語表",
+   "video_dubbing_studio": "視訊配音工作室"
   },
   "dub_workflow": {
     "preparing_audio": "正在準備音訊...",
@@ -4321,9 +4333,9 @@
       "stems_hint": "原始錄音尚未分離。請使用電腦分離背景音軌。",
       "timing": "時間匹配",
       "top": "將字幕置於頂端",
-      "video_required": "請先產生影片再匯出多條音軌。",
       "white": "白色",
-      "yellow": "黃色"
+      "yellow": "黃色",
+     "video_required": "請先產生影片再匯出多條音軌。"
     },
     "handoff": {
       "title": "專案傳輸與備份",
@@ -4395,12 +4407,12 @@
     "tls_connection_dropped": "安全連線已中斷。請重試；若反覆發生，請關閉 VPN 再試。",
     "transformers_import": "語音元件載入失敗。請在後端記錄中查看原因。",
     "unsupported_video_url": "此連結不是影片頁面。請貼上影片直接連結或上傳檔案。",
-    "video_download_bot_check": "YouTube 要求登入驗證。請在配音中附加匯出的 cookies.txt，或上傳檔案。",
-    "video_download_network": "影片下載中斷。請重試；若反覆發生，請檢查網路。",
-    "video_download_os_error": "無法儲存影片。請檢查可用空間及資料資料夾是否可寫入。",
-    "video_drm_protected": "此影片受 DRM 保護，無法下載。請稍後再試或上傳檔案。",
     "windows_paging_file_too_small": "此模型需要更大的 Windows 分頁檔。請設定為至少 32 GB 並重新啟動，或改用較小的引擎。",
-    "windows_untrusted_mount": "Windows 封鎖了不受信任磁碟上的資料夾。請將資料資料夾移到一般本機磁碟。"
+    "windows_untrusted_mount": "Windows 封鎖了不受信任磁碟上的資料夾。請將資料資料夾移到一般本機磁碟。",
+   "video_download_bot_check": "YouTube 要求登入驗證。請在配音中附加匯出的 cookies.txt，或上傳檔案。",
+   "video_download_network": "影片下載中斷。請重試；若反覆發生，請檢查網路。",
+   "video_download_os_error": "無法儲存影片。請檢查可用空間及資料資料夾是否可寫入。",
+   "video_drm_protected": "此影片受 DRM 保護，無法下載。請稍後再試或上傳檔案。"
   },
   "failureAction": {
     "add_transcript": "加入逐字稿",

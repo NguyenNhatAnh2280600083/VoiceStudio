@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from 'rea
 import { useTranslation } from 'react-i18next';
 import { KeyRoundIcon } from 'lucide-react';
 import { exchangeApiKey } from '@shared/api/authSession';
-import { absoluteApiBase, ApiError, apiFetch } from '@/lib/api/client';
+import { absoluteApiBase, apiFetch } from '@/lib/api/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -30,10 +30,11 @@ export function WebAuthGate({ children }: { children: ReactNode }) {
     window.addEventListener('ov:auth-required', required);
     void apiFetch('/engines')
       .then(() => setChecked(true))
-      .catch((error) => {
-        if (!(error instanceof ApiError) || (error.status !== 401 && error.status !== 403)) {
-          setChecked(true);
-        }
+      .catch(() => {
+        // apiFetch dispatches `ov:auth-required` for the auth failures this
+        // gate handles. Every other rejection must still release the splash;
+        // otherwise an unrelated 403 leaves the whole web app on Loading….
+        setChecked(true);
       });
     return () => window.removeEventListener('ov:auth-required', required);
   }, []);

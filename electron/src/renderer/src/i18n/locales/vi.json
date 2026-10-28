@@ -499,7 +499,7 @@
     "steps": "bước",
     "voice_source": "Nguồn giọng nói",
     "reference_audio": "Âm thanh tham chiếu",
-    "reference_hint": "Dùng 5–15 giây lời nói rõ ràng.",
+    "reference_hint": "Dùng 5–15 giây lời nói rõ ràng. Có thể tải lên tối đa 5 phút; hệ thống sẽ tự chọn đoạn 15 giây phù hợp nhất. Clip dài hơn 20 giây cần cài mô hình nhận dạng giọng nói.",
     "ref_usage_best_window": "Công cụ này dùng tối đa {{seconds}} giây — đoạn tốt nhất được chọn tự động.",
     "ref_usage_head": "Công cụ này dùng {{seconds}} giây đầu của đoạn này.",
     "ref_usage_long": "Dài hơn mức khuyến nghị {{seconds}} giây. Toàn bộ đoạn được gửi tới công cụ.",
@@ -593,6 +593,18 @@
     "dialect_qingdao": "Phương ngữ Thanh Đảo",
     "dialect_dongbei": "Phương ngữ Đông Bắc",
     "style_placeholder": "ví dụ: thì thầm",
+    "delivery_prompt": "Prompt cách đọc",
+    "delivery_prompt_placeholder": "Ví dụ: đọc ấm áp, điềm tĩnh, lên xuống nhẹ nhàng và ngắt ở dấu phẩy.",
+    "delivery_prompt_help": "Mô hình này nhận chỉ dẫn bằng ngôn ngữ tự nhiên. Âm thanh tham chiếu vẫn quyết định đặc điểm giọng nói.",
+    "describe_tags_only": "OmniVoice chỉ nhận tag cố định: giới tính, độ tuổi, cao độ, thì thầm, giọng Anh hoặc phương ngữ Trung. Mô hình không hỗ trợ prompt ngôn ngữ tự nhiên hay cảm xúc. Muốn dùng prompt, hãy chọn engine hỗ trợ văn bản tự do hoặc cảm xúc.",
+    "reading_cues": "Dấu cách đọc",
+    "cue_slow": "Đọc chậm",
+    "cue_fast": "Đọc nhanh",
+    "cue_emphasis": "Nhấn nhẹ",
+    "cue_pause": "Ngắt nghỉ",
+    "cue_whisper": "Thì thầm",
+    "reading_cue_help": "Dùng [slow]...[/slow] hoặc [fast]...[/fast] để đổi nhịp một đoạn. [emphasis] làm chậm nhẹ để nhấn; [pause] chèn khoảng lặng.",
+    "reading_cue_whisper_help": "Dùng [whisper]...[/whisper] để đọc thì thầm đoạn văn này.",
     "stop_playback": "Dừng phát",
     "describe_label": "Mô tả giọng nói của bạn",
     "describe_placeholder": "vd. a warm elderly British storyteller, slightly raspy",
@@ -704,7 +716,6 @@
     "no_video": "Không có video nào được tải",
     "segments": "phân đoạn",
     "speakers": "loa",
-    "video_dubbing_studio": "Studio lồng tiếng video",
     "drop_here": "Thả video hoặc âm thanh vào đây",
     "paste_url": "…hoặc dán URL YouTube/video",
     "ingest": "Nhập",
@@ -936,7 +947,8 @@
     "segment_count_other": "{{count}} đoạn",
     "glossary_terms_one": "Bảng thuật ngữ · {{count}} thuật ngữ",
     "glossary_terms_other": "Bảng thuật ngữ · {{count}} thuật ngữ",
-    "glossary_label": "Bảng thuật ngữ"
+    "glossary_label": "Bảng thuật ngữ",
+   "video_dubbing_studio": "Studio lồng tiếng video"
   },
   "dub_workflow": {
     "preparing_audio": "Đang chuẩn bị âm thanh…",
@@ -2770,9 +2782,12 @@
     "tailscale_qr_alt": "Mã QR cho URL Tailscale"
   },
   "convert": {
+    "nav_label": "Đổi giọng từ file",
+    "workflow_title": "Chuyển giọng nói trong file",
+    "file_too_large": "File vượt quá giới hạn 64 MB. Hãy dùng MP3 ngắn hơn hoặc giảm dung lượng file.",
     "cloning_required": "Chọn mô hình chuyển văn bản thành giọng nói sẵn sàng sử dụng và hỗ trợ nhân bản giọng nói.",
     "source_kicker": "Clip nguồn",
-    "drop_audio": "Thả clip cần chuyển đổi vào đây — hoặc nhấp. WAV, MP3, M4A…",
+    "drop_audio": "Thả file giọng nói vào đây hoặc nhấp để chọn. Nhận MP3, WAV, M4A… (clip khoảng 1 phút, tối đa 64 MB).",
     "target_voice": "Giọng đích",
     "pick_voice": "Chọn hồ sơ giọng nói…",
     "match_duration": "Khớp thời lượng nguồn",
@@ -2782,7 +2797,7 @@
     "converting": "Đang chuyển đổi…",
     "transcript": "Nội dung nghe được",
     "result_kicker": "Bản thu đã chuyển đổi",
-    "need_source_and_voice": "Hãy thêm clip nguồn và chọn giọng đích trước."
+    "need_source_and_voice": "Tải MP3 khoảng 1 phút lên, chọn hồ sơ giọng đích rồi bấm Chuyển đổi. Ứng dụng sẽ nhận dạng lời nói, tạo lại bằng giọng đã chọn và cho nghe hoặc tải file WAV kết quả."
   },
   "glossary": {
     "title": "Thuật ngữ",
@@ -4321,9 +4336,9 @@
       "stems_hint": "Bản ghi gốc chưa được tách. Dùng máy tính để tách riêng bản âm nền.",
       "timing": "Căn thời gian",
       "top": "Đặt phụ đề ở trên",
-      "video_required": "Tạo video trước khi xuất nhiều bản âm thanh.",
       "white": "Trắng",
-      "yellow": "Vàng"
+      "yellow": "Vàng",
+     "video_required": "Tạo video trước khi xuất nhiều bản âm thanh."
     },
     "handoff": {
       "title": "Chuyển và sao lưu dự án",
@@ -4395,12 +4410,12 @@
     "tls_connection_dropped": "Kết nối bảo mật bị ngắt. Thử lại; nếu lặp lại, hãy thử không dùng VPN.",
     "transformers_import": "Không tải được một thành phần giọng nói. Xem nguyên nhân trong nhật ký backend.",
     "unsupported_video_url": "Liên kết này không phải trang video. Dán liên kết video trực tiếp hoặc tải tệp lên.",
-    "video_download_bot_check": "YouTube yêu cầu xác minh khi đăng nhập. Đính kèm tệp cookies.txt đã xuất trong Lồng tiếng hoặc tải tệp lên.",
-    "video_download_network": "Tải video bị ngắt. Thử lại; nếu lặp lại, hãy kiểm tra mạng.",
-    "video_download_os_error": "Không lưu được video. Kiểm tra dung lượng trống và quyền ghi của thư mục dữ liệu.",
-    "video_drm_protected": "Video này được bảo vệ DRM và không thể tải xuống. Thử lại sau hoặc tải tệp lên.",
     "windows_paging_file_too_small": "Windows cần tệp hoán trang lớn hơn cho mô hình này. Đặt ít nhất 32 GB rồi khởi động lại, hoặc dùng công cụ nhỏ hơn.",
-    "windows_untrusted_mount": "Windows đã chặn một thư mục trên ổ không tin cậy. Chuyển thư mục dữ liệu sang ổ cục bộ thông thường."
+    "windows_untrusted_mount": "Windows đã chặn một thư mục trên ổ không tin cậy. Chuyển thư mục dữ liệu sang ổ cục bộ thông thường.",
+   "video_download_bot_check": "YouTube yêu cầu xác minh khi đăng nhập. Đính kèm tệp cookies.txt đã xuất trong Lồng tiếng hoặc tải tệp lên.",
+   "video_download_network": "Tải video bị ngắt. Thử lại; nếu lặp lại, hãy kiểm tra mạng.",
+   "video_download_os_error": "Không lưu được video. Kiểm tra dung lượng trống và quyền ghi của thư mục dữ liệu.",
+   "video_drm_protected": "Video này được bảo vệ DRM và không thể tải xuống. Thử lại sau hoặc tải tệp lên."
   },
   "failureAction": {
     "add_transcript": "Thêm bản ghi lời",

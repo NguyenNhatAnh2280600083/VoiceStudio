@@ -6,7 +6,7 @@ exactly that pair: the backend transcribed the whole clip whenever no
 transcript was stored (``_get_clone_prompt``, ``/generate``), and saved
 profiles kept the whole-clip transcript made at save time. A 25 s saved voice
 was therefore permanently unusable on the default engine, although the model's
-own transcript-free path picks the best 15 s passage of clips up to 75 s.
+own transcript-free path picks the best 15 s passage of clips up to 300 s.
 
 Rules pinned here:
   * an automatic or stored transcript on an over-long clip is dropped at the
@@ -132,7 +132,7 @@ def test_long_reference_uses_installed_asr_windows(
     assert len(windows.paths) == 2
 
 
-def test_long_reference_over_75s_is_not_windowed(
+def test_long_reference_over_300s_is_not_windowed(
     tmp_path, monkeypatch, no_prompt_disk_cache
 ):
     """Past the engine's hard cap, no catalogue window is invented."""
@@ -142,7 +142,7 @@ def test_long_reference_over_75s_is_not_windowed(
     monkeypatch.setattr(ab, "transcribe_reference", counting)
     model = _omnivoice_stub()
 
-    prompt = _tts()._get_clone_prompt(model, _wav(tmp_path / "too-long.wav", 80), None)
+    prompt = _tts()._get_clone_prompt(model, _wav(tmp_path / "too-long.wav", 301), None)
 
     assert prompt is None
     assert counting.calls == 0

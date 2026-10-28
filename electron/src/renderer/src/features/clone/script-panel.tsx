@@ -13,12 +13,16 @@ import {
 import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { useEngines } from '@/hooks/use-engines';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { TAGS } from '@/lib/languages';
 import { setCloneSetting, useCloneSetting } from '@/lib/store/clone-settings';
 import { cn } from '@/lib/utils';
 import { SectionLabel } from './section-label';
+
+const PROSODY_CUES = ['slow', 'fast', 'emphasis', 'whisper'] as const;
 
 export function ScriptPanel({
   voiceName,
@@ -26,7 +30,11 @@ export function ScriptPanel({
   onUserEdit,
 }: { voiceName?: string; coachmark?: string; onUserEdit?: () => void } = {}) {
   const { t } = useTranslation();
+  const { activeTts } = useEngines();
   const text = useCloneSetting('text');
+  const instruct = useCloneSetting('instruct');
+  const emotionText = useCloneSetting('emotionText');
+  const supportsTagStyle = activeTts?.instruct_vocabulary === 'tags';
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const importRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -124,6 +132,21 @@ export function ScriptPanel({
       );
   };
 
+  const insertProsodyCue = (cue: (typeof PROSODY_CUES)[number]) => {
+    const field = textareaRef.current;
+    if (!field) return;
+    const start = field.selectionStart;
+    const end = field.selectionEnd;
+    const selected = field.value.slice(start, end);
+    const openTag = `[${cue}]`;
+    const insertion = `${openTag}${selected}[/${cue}]`;
+    edit(insertion);
+    requestAnimationFrame(() => {
+      field.focus();
+      field.setSelectionRange(start + openTag.length, start + openTag.length + selected.length);
+    });
+  };
+
   useEffect(() => {
     if (!insertOpen) return;
     const close = (event: Event) => {
@@ -141,6 +164,56 @@ export function ScriptPanel({
   return (
     <section className="flex min-h-64 flex-1 flex-col">
       <div className="flex min-h-0 flex-1 flex-col gap-3">
+        {activeTts?.supports_emotion ? (
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium" htmlFor="clone-delivery-prompt">
+              {t('cloneEmotion.title')}
+            </label>
+            <Textarea
+              id="clone-delivery-prompt"
+              value={emotionText}
+              maxLength={500}
+              placeholder={t('clone.delivery_prompt_placeholder')}
+              onChange={(event) => {
+                setCloneSetting('emotionMode', 'text');
+                setCloneSetting('emotionText', event.target.value);
+              }}
+              className="min-h-16 resize-y"
+            />
+            <p className="text-xs text-muted-foreground">{t('clone.delivery_prompt_help')}</p>
+          </div>
+        ) :
+        (activeTts?.supports_cloning || activeTts?.supports_voice_design) &&
+        activeTts?.instruct_vocabulary === 'freeform' ? (
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium" htmlFor="clone-delivery-prompt">
+              {t('clone.delivery_prompt')}
+            </label>
+            <Textarea
+              id="clone-delivery-prompt"
+              value={instruct}
+              maxLength={500}
+              placeholder={t('clone.delivery_prompt_placeholder')}
+              onChange={(event) => setCloneSetting('instruct', event.target.value)}
+              className="min-h-16 resize-y"
+            />
+            <p className="text-xs text-muted-foreground">{t('clone.describe_freeform')}</p>
+          </div>
+        ) :
+        (activeTts?.supports_cloning || activeTts?.supports_voice_design) &&
+        activeTts?.instruct_vocabulary === 'tags' ? (
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium" htmlFor="clone-delivery-prompt">
+              {t('clone.style')}
+            </label>
+            <Input
+              id="clone-delivery-prompt"
+              value={instruct}
+              placeholder={t('clone.style_placeholder')}
+              onChange={(event) => setCloneSetting('instruct', event.target.value)}
+            />
+          </div>
+        ) : null}
         <div className="flex items-center justify-between gap-3">
           <SectionLabel>
             <AlignLeftIcon aria-hidden="true" />
@@ -316,6 +389,28 @@ export function ScriptPanel({
                           {tag}
                         </button>
                       ))}
+                      <div className="w-full border-t border-border/70 pt-2 text-xs font-medium text-muted-foreground">
+                        {t('clone.reading_cues')}
+                      </div>
+                      {PROSODY_CUES.filter((cue) => cue !== 'whisper' || supportsTagStyle).map((cue) => (
+                        <button
+                          key={cue}
+                          type="button"
+                          role="menuitem"
+                          className="rounded-full px-2 py-0.5 text-[length:var(--text-caption)] text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+                          onClick={() => insertProsodyCue(cue)}
+                        >
+                          {t(`clone.cue_${cue}`)}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        role="menuitem"
+                        className="rounded-full px-2 py-0.5 text-[length:var(--text-caption)] text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+                        onClick={() => edit('[pause]')}
+                      >
+                        {t('clone.cue_pause')}
+                      </button>
                     </div>,
                     document.body,
                   )
@@ -356,6 +451,14 @@ export function ScriptPanel({
           }}
           spellCheck
         />
+        <p className="text-[length:var(--text-caption)] text-muted-foreground">
+          {t('clone.reading_cue_help')}
+        </p>
+        {supportsTagStyle && (
+          <p className="text-[length:var(--text-caption)] text-muted-foreground">
+            {t('clone.reading_cue_whisper_help')}
+          </p>
+        )}
         <div className="flex justify-end">
           <span className="text-[length:var(--text-label)] text-muted-foreground tabular-nums">
             {t('clone.characters', { count: text.length })}

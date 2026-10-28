@@ -499,7 +499,7 @@
     "steps": "Steg",
     "voice_source": "Röstkälla",
     "reference_audio": "Referensljud",
-    "reference_hint": "Använd 5–15 sekunder tydligt tal.",
+    "reference_hint": "Använd 5–15 sekunder tydligt tal. Ladda upp upp till 5 minuter; det bästa avsnittet på 15 sekunder väljs automatiskt. Klipp över 20 sekunder kräver en installerad taligenkänningsmodell.",
     "ref_usage_best_window": "Den här motorn använder upp till {{seconds}} s – det bästa avsnittet väljs automatiskt.",
     "ref_usage_head": "Den här motorn använder de första {{seconds}} s av klippet.",
     "ref_usage_long": "Längre än rekommenderade {{seconds}} s. Hela klippet skickas till motorn.",
@@ -593,6 +593,18 @@
     "dialect_qingdao": "Qingdao-dialekt",
     "dialect_dongbei": "Nordostkinesisk dialekt",
     "style_placeholder": "t.ex. viska",
+    "delivery_prompt": "Läsinstruktion",
+    "delivery_prompt_placeholder": "t.ex. varmt och lugnt, med mjuka tonfall och pauser vid kommatecken.",
+    "delivery_prompt_help": "Den här motorn stöder instruktioner på naturligt språk. Referensljudet ger fortfarande röstens identitet.",
+    "describe_tags_only": "OmniVoice godtar bara fasta taggar: kön, ålder, tonhöjd, viskning, engelsk accent eller kinesisk dialekt. Instruktioner på naturligt språk och känsloprompter stöds inte. Välj en motor med fritext eller känslostöd för att använda promptar.",
+    "reading_cues": "Läsmarkörer",
+    "cue_slow": "Långsamt",
+    "cue_fast": "Snabbt",
+    "cue_emphasis": "Lätt betoning",
+    "cue_pause": "Paus",
+    "cue_whisper": "Viskning",
+    "reading_cue_help": "Använd [slow]...[/slow] eller [fast]...[/fast] för att ändra tempot i ett avsnitt. [emphasis] saktar ner lite; [pause] infogar tystnad.",
+    "reading_cue_whisper_help": "Använd [whisper]...[/whisper] för att viska den här passagen.",
     "stop_playback": "Stoppa uppspelning",
     "describe_label": "Beskriv din röst",
     "describe_placeholder": "t.ex. a warm elderly British storyteller, slightly raspy",
@@ -704,7 +716,6 @@
     "no_video": "Ingen video laddad",
     "segments": "segment",
     "speakers": "högtalare",
-    "video_dubbing_studio": "Videodubbningsstudio",
     "drop_here": "Släpp video eller ljud här",
     "paste_url": "…eller klistra in YouTube/videons URL",
     "ingest": "Inta",
@@ -936,7 +947,8 @@
     "segment_count_other": "{{count}} segment",
     "glossary_terms_one": "Ordlista · {{count}} term",
     "glossary_terms_other": "Ordlista · {{count}} termer",
-    "glossary_label": "Ordlista"
+    "glossary_label": "Ordlista",
+   "video_dubbing_studio": "Videodubbningsstudio"
   },
   "dub_workflow": {
     "preparing_audio": "Förbereder ljud...",
@@ -4321,9 +4333,9 @@
       "stems_hint": "Originalinspelningen är inte separerad. Använd datorn för ett isolerat bakgrundsspår.",
       "timing": "Tajming",
       "top": "Placera undertexter överst",
-      "video_required": "Skapa en video innan du exporterar flera ljudspår.",
       "white": "Vit",
-      "yellow": "Gul"
+      "yellow": "Gul",
+     "video_required": "Skapa en video innan du exporterar flera ljudspår."
     },
     "handoff": {
       "title": "Projektöverföring och säkerhetskopiering",
@@ -4395,12 +4407,12 @@
     "tls_connection_dropped": "Den säkra anslutningen bröts. Försök igen; om det upprepas, prova utan VPN.",
     "transformers_import": "En talkomponent kunde inte laddas. Se orsaken i backend-loggen.",
     "unsupported_video_url": "Länken är ingen videosida. Klistra in en direkt videolänk eller ladda upp filen.",
-    "video_download_bot_check": "YouTube kräver en kontroll med inloggning. Bifoga en cookies.txt-export i Dubbning eller ladda upp filen.",
-    "video_download_network": "Videonedladdningen avbröts. Försök igen; om det upprepas, kontrollera nätverket.",
-    "video_download_os_error": "Videon kunde inte sparas. Kontrollera ledigt utrymme och att datamappen är skrivbar.",
-    "video_drm_protected": "Den här videon är DRM-skyddad och kan inte laddas ner. Försök senare eller ladda upp filen.",
     "windows_paging_file_too_small": "Windows behöver en större växlingsfil för den här modellen. Ställ in minst 32 GB och starta om, eller använd en mindre motor.",
-    "windows_untrusted_mount": "Windows blockerade en mapp på en ej betrodd enhet. Flytta datamappen till en vanlig lokal enhet."
+    "windows_untrusted_mount": "Windows blockerade en mapp på en ej betrodd enhet. Flytta datamappen till en vanlig lokal enhet.",
+   "video_download_bot_check": "YouTube kräver en kontroll med inloggning. Bifoga en cookies.txt-export i Dubbning eller ladda upp filen.",
+   "video_download_network": "Videonedladdningen avbröts. Försök igen; om det upprepas, kontrollera nätverket.",
+   "video_download_os_error": "Videon kunde inte sparas. Kontrollera ledigt utrymme och att datamappen är skrivbar.",
+   "video_drm_protected": "Den här videon är DRM-skyddad och kan inte laddas ner. Försök senare eller ladda upp filen."
   },
   "failureAction": {
     "add_transcript": "Lägg till transkription",

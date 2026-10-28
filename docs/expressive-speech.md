@@ -12,6 +12,9 @@ ignores.
 | You want | Do this | Works on |
 |---|---|---|
 | A pause | Type `[pause]`, `[pause 500ms]`, or `[pause 1.5s]` in the text | Every engine |
+| Change a passage's pace | Wrap it in `[slow]...[/slow]` or `[fast]...[/fast]` | Voice Clone, Audiobook, Stories |
+| Gently emphasize a passage | Wrap it in `[emphasis]...[/emphasis]` | Voice Clone, Audiobook, Stories |
+| Whisper a passage | Wrap it in `[whisper]...[/whisper]` | Voice Clone with OmniVoice |
 | Laughter or a sigh | ⊕ Insert → `[laughter]` / `[sigh]` | Default engine (VoiceStudio) |
 | An audible breath **on demand** | `[breath]` in the text | CosyVoice 3 only (opt-in) — see [Breaths](#breaths-specifically) |
 | Whispering | Style → `whisper` (the voice-design/style field) | Default engine |
@@ -26,8 +29,9 @@ Cached chapters are matched by their script, voice and render settings, not by w
 
 ## Why bracket tags work at all (and when they don't)
 
-Everything you type in the text box reaches the active engine **verbatim** —
-the pipeline goes out of its way not to break tags:
+Text normalization preserves bracketed script cues. Voice Clone, Audiobook, and
+Stories consume the cues they support before sending each spoken span to the
+active engine:
 
 - Tilde-separated integer, signed, and decimal ranges get a spoken separator in
   English, Korean, Japanese, and Chinese; malformed chains and product codes
@@ -131,11 +135,18 @@ request at most 15 minutes of added join silence; larger requests fail before
 synthesis or cache reads. Reduce the gaps or split the chapter to proceed.
 Accepted gaps retain their exact duration on fresh renders and cache reuse.
 
-**Longform-only tags.** Audiobook and Stories additionally parse SSML-lite —
-`[slow]…[/slow]`, `[fast]…[/fast]`, `[emphasis]…[/emphasis]`, `[spell]` —
-plus `[voice:NAME]` for multi-voice scripts
-(`backend/services/longform_parser.py`). These are not parsed on the Voice
-page.
+**Longform-only tags.** Audiobook and Stories additionally parse `[spell]` and
+`[voice:NAME]` for multi-voice scripts (`backend/services/longform_parser.py`).
+Voice Clone does not parse those tags.
+
+**Per-passage pace in Voice Clone.** Wrap text in `[slow]...[/slow]` or
+`[fast]...[/fast]`. Use `[emphasis]...[/emphasis]` for a gentle slowdown, or
+`[pause 500ms]` to insert silence. The `+ Insert` menu in the script editor can
+wrap selected text with these cues. These adjust pace and pauses, not emotion;
+OmniVoice does not support inline `[happy]` / `[sad]` prompts.
+
+On OmniVoice, `[whisper]...[/whisper]` changes the `whisper` style for that
+passage, while the reference audio continues to define the speaker's identity.
 
 ### CosyVoice 3 (opt-in)
 

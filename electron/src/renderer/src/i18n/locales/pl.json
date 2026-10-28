@@ -509,7 +509,7 @@
     "steps": "Kroki",
     "voice_source": "Źródło głosu",
     "reference_audio": "Dźwięk referencyjny",
-    "reference_hint": "Użyj 5–15 sekund wyraźnej mowy.",
+    "reference_hint": "Użyj 5–15 sekund wyraźnej mowy. Prześlij nagranie do 5 minut; najlepszy 15-sekundowy fragment zostanie wybrany automatycznie. Klipy dłuższe niż 20 sekund wymagają zainstalowanego modelu rozpoznawania mowy.",
     "ref_usage_best_window": "Ten silnik używa do {{seconds}} s — najlepszy fragment jest wybierany automatycznie.",
     "ref_usage_head": "Ten silnik używa pierwszych {{seconds}} s tego klipu.",
     "ref_usage_long": "Dłuższy niż zalecane {{seconds}} s. Cały klip trafia do silnika.",
@@ -603,6 +603,18 @@
     "dialect_qingdao": "Dialekt Qingdao",
     "dialect_dongbei": "Dialekt północno-wschodni",
     "style_placeholder": "np. szeptać",
+    "delivery_prompt": "Wskazówka czytania",
+    "delivery_prompt_placeholder": "np. ciepło i spokojnie, z łagodną intonacją oraz pauzami przy przecinkach.",
+    "delivery_prompt_help": "Ten silnik obsługuje wskazówki w języku naturalnym. Tożsamość głosu nadal pochodzi z nagrania referencyjnego.",
+    "describe_tags_only": "OmniVoice przyjmuje tylko stałe tagi: płeć, wiek, wysokość głosu, szept, angielski akcent lub chiński dialekt. Nie obsługuje wskazówek w języku naturalnym ani promptów emocji. Wybierz silnik obsługujący swobodny tekst lub emocje.",
+    "reading_cues": "Wskazówki czytania",
+    "cue_slow": "Wolno",
+    "cue_fast": "Szybko",
+    "cue_emphasis": "Delikatny nacisk",
+    "cue_pause": "Pauza",
+    "cue_whisper": "Szept",
+    "reading_cue_help": "Użyj [slow]...[/slow] lub [fast]...[/fast], aby zmienić tempo fragmentu. [emphasis] lekko zwalnia; [pause] wstawia ciszę.",
+    "reading_cue_whisper_help": "Użyj [whisper]...[/whisper], aby przeczytać ten fragment szeptem.",
     "stop_playback": "Zatrzymaj odtwarzanie",
     "describe_label": "Opisz swój głos",
     "describe_placeholder": "np. a warm elderly British storyteller, slightly raspy",
@@ -714,7 +726,6 @@
     "no_video": "Brak załadowanego filmu",
     "segments": "segmenty",
     "speakers": "głośniki",
-    "video_dubbing_studio": "Studio dubbingu wideo",
     "drop_here": "Upuść tutaj wideo lub audio",
     "paste_url": "…lub wklej adres URL YouTube/wideo",
     "ingest": "Połknąć",
@@ -950,7 +961,8 @@
     "glossary_terms_other": "Słowniczek · {{count}} terminu",
     "glossary_terms_few": "Słowniczek · {{count}} terminy",
     "glossary_terms_many": "Słowniczek · {{count}} terminów",
-    "glossary_label": "Słowniczek"
+    "glossary_label": "Słowniczek",
+   "video_dubbing_studio": "Studio dubbingu wideo"
   },
   "dub_workflow": {
     "preparing_audio": "Przygotowuję dźwięk…",
@@ -4349,9 +4361,9 @@
       "stems_hint": "Oryginalne nagranie nie jest rozdzielone. Użyj komputera, aby odizolować ścieżkę tła.",
       "timing": "Synchronizacja",
       "top": "Umieść napisy u góry",
-      "video_required": "Wygeneruj wideo przed eksportem wielu ścieżek audio.",
       "white": "Biały",
-      "yellow": "Żółty"
+      "yellow": "Żółty",
+     "video_required": "Wygeneruj wideo przed eksportem wielu ścieżek audio."
     },
     "handoff": {
       "title": "Przenoszenie i kopie zapasowe projektów",
@@ -4423,12 +4435,12 @@
     "tls_connection_dropped": "Bezpieczne połączenie zostało przerwane. Spróbuj ponownie; jeśli się powtarza, spróbuj bez VPN.",
     "transformers_import": "Nie udało się wczytać komponentu mowy. Przyczynę znajdziesz w dzienniku backendu.",
     "unsupported_video_url": "Ten link nie prowadzi do strony wideo. Wklej bezpośredni link do wideo lub prześlij plik.",
-    "video_download_bot_check": "YouTube wymaga weryfikacji z zalogowaniem. Dołącz eksport cookies.txt w Dubbingu lub prześlij plik.",
-    "video_download_network": "Pobieranie wideo zostało przerwane. Spróbuj ponownie; jeśli się powtarza, sprawdź sieć.",
-    "video_download_os_error": "Nie udało się zapisać wideo. Sprawdź wolne miejsce i czy folder danych jest zapisywalny.",
-    "video_drm_protected": "To wideo jest chronione DRM i nie można go pobrać. Spróbuj później lub prześlij plik.",
     "windows_paging_file_too_small": "Windows potrzebuje większego pliku stronicowania dla tego modelu. Ustaw co najmniej 32 GB i uruchom ponownie albo użyj mniejszego silnika.",
-    "windows_untrusted_mount": "Windows zablokował folder na niezaufanym dysku. Przenieś folder danych na zwykły dysk lokalny."
+    "windows_untrusted_mount": "Windows zablokował folder na niezaufanym dysku. Przenieś folder danych na zwykły dysk lokalny.",
+   "video_download_bot_check": "YouTube wymaga weryfikacji z zalogowaniem. Dołącz eksport cookies.txt w Dubbingu lub prześlij plik.",
+   "video_download_network": "Pobieranie wideo zostało przerwane. Spróbuj ponownie; jeśli się powtarza, sprawdź sieć.",
+   "video_download_os_error": "Nie udało się zapisać wideo. Sprawdź wolne miejsce i czy folder danych jest zapisywalny.",
+   "video_drm_protected": "To wideo jest chronione DRM i nie można go pobrać. Spróbuj później lub prześlij plik."
   },
   "failureAction": {
     "add_transcript": "Dodaj transkrypcję",

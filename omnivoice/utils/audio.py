@@ -51,7 +51,8 @@ CLONE_REF_NO_SPEECH_MARKER = "[clone_ref_no_speech]"
 # first value as OmniVoice's max_ref_seconds, so the UI states the real limit.
 CLONE_REF_TEXT_MAX_SECONDS = 20.0
 CLONE_REF_WINDOW_SECONDS = 15.0
-CLONE_REF_MAX_WINDOWS = 5
+CLONE_REF_MAX_WINDOWS = 20
+CLONE_REF_MAX_SECONDS = CLONE_REF_WINDOW_SECONDS * CLONE_REF_MAX_WINDOWS
 # The selected passage's edges are pulled inward to a pause within this span,
 # so it neither starts nor ends mid-word.
 CLONE_REF_EDGE_SEARCH_SECONDS = 1.5

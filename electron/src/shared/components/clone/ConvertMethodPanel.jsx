@@ -3,6 +3,7 @@ import {
   UploadCloud,
   X,
   ArrowRightLeft,
+  Download,
   Loader,
   AudioLines,
   Fingerprint,
@@ -21,6 +22,7 @@ import useRecording from '../../hooks/useRecording';
 import MicButton from './MicButton';
 import VoiceSelector from '../VoiceSelector';
 import WaveformPlayer from '../WaveformPlayer';
+import { browserDownload } from '../../utils/download';
 
 /**
  * Studio "Convert" method — speech-to-speech voice changer.
@@ -301,6 +303,24 @@ export default function ConvertMethodPanel({ t, profiles = [], onRecordingBusyCh
               height={40}
               autoPlay
             />
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={async () => {
+                try {
+                  await browserDownload(
+                    `${API}${result.audio_url}`,
+                    `voicestudio-${result.id}.wav`,
+                  );
+                } catch (error) {
+                  const message = error instanceof Error ? error.message : String(error);
+                  toast.error(t('clone.download_failed', { message }));
+                }
+              }}
+              leading={<Download size={14} />}
+            >
+              {t('clone.download')}
+            </Button>
             <div className="mt-2 text-[0.78rem] text-fg-muted">
               <span className="font-medium">{t('convert.transcript')}:</span> {result.text}
             </div>
@@ -308,21 +328,28 @@ export default function ConvertMethodPanel({ t, profiles = [], onRecordingBusyCh
         )}
       </div>
       <div className="studio-action-bar" data-testid="convert-action-bar">
-        <Button
-          variant="primary"
-          block
-          onClick={handleConvert}
-          disabled={!canConvert}
-          leading={
-            isConverting ? (
-              <Loader size={14} className="animate-spin" />
-            ) : (
-              <ArrowRightLeft size={14} />
-            )
-          }
-        >
-          {isConverting ? t('convert.converting') : t('convert.convert')}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="primary"
+            block
+            onClick={handleConvert}
+            disabled={!canConvert}
+            leading={
+              isConverting ? (
+                <Loader size={14} className="animate-spin" />
+              ) : (
+                <ArrowRightLeft size={14} />
+              )
+            }
+          >
+            {isConverting ? t('convert.converting') : t('convert.convert')}
+          </Button>
+          {isConverting && (
+            <Button variant="ghost" onClick={invalidateInFlight}>
+              {t('common.cancel')}
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

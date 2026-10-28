@@ -567,13 +567,24 @@ def _render_with_pauses(gen_span, segments, sample_rate, *, trim_spans=False,
 
     items = []  # ('a', tensor) for audio, ('s', n_samples) for silence
     calls = 0  # engine calls so far — the chunk index handed to gen_span
-    for span_text, pause_ms in segments:
+    for segment in segments:
+        span_text, pause_ms = segment[:2]
+        speed_multiplier = segment[2] if len(segment) > 2 else None
+        span_instruct = segment[3] if len(segment) > 3 else None
         if span_text and span_text.strip():
             chunks = split_text_into_chunks(span_text, max_chunk_chars) if max_chunk_chars > 0 else [span_text]
             if len(chunks) > 1:
                 parts = []
                 for chunk_text in chunks:
-                    parts.append(gen_span(chunk_text, chunk_index=calls))
+                    if speed_multiplier is None and span_instruct is None:
+                        rendered = gen_span(chunk_text, chunk_index=calls)
+                    else:
+                        rendered = gen_span(
+                            chunk_text, chunk_index=calls,
+                            speed_multiplier=speed_multiplier,
+                            span_instruct=span_instruct,
+                        )
+                    parts.append(rendered)
                     calls += 1
                     _note_generate_progress()
                 audio = concatenate_audio_chunks(
@@ -583,7 +594,14 @@ def _render_with_pauses(gen_span, segments, sample_rate, *, trim_spans=False,
                     # the span out so its 1-D fallback cannot break the final join.
                     audio = None
             else:
-                audio = gen_span(span_text)
+                audio = (
+                    gen_span(span_text)
+                    if speed_multiplier is None and span_instruct is None
+                    else gen_span(
+                        span_text, speed_multiplier=speed_multiplier,
+                        span_instruct=span_instruct,
+                    )
+                )
                 calls += 1
                 _note_generate_progress()
             if audio is not None:
@@ -611,6 +629,49 @@ def _render_with_pauses(gen_span, segments, sample_rate, *, trim_spans=False,
             shape[-1] = val
             parts.append(torch.zeros(*shape, dtype=ref.dtype, device=ref.device))
     return torch.cat(parts, dim=-1)
+
+
+def _parse_inline_prosody(text, *, allow_whisper=False):
+    """Split clone scripts into style spans, removing cues before TTS.
+
+    This composes the existing SSML-lite speed cues with pause markers so each
+    voice-rendered passage can use its own relative speed while retaining the
+    model-free silence stitching.
+    """
+    from omnivoice.utils.text import parse_pause_markers
+    from services.ssml_lite import parse_ssml_lite
+
+    if not allow_whisper:
+        styled_runs = [(text, False)]
+    else:
+        whisper_tag = re.compile(r"(?<!\[)\[(/?)whisper\](?!\])", re.IGNORECASE)
+        styled_runs = []
+        depth = 0
+        last = 0
+        for match in whisper_tag.finditer(text):
+            styled_runs.append((text[last:match.start()], depth > 0))
+            depth = max(0, depth + (-1 if match.group(1) else 1))
+            last = match.end()
+        styled_runs.append((text[last:], depth > 0))
+
+    segments = []
+    for run, whisper in styled_runs:
+        for style in parse_ssml_lite(run):
+            for span, pause_ms in parse_pause_markers(style["text"]):
+                segments.append((
+                    span, pause_ms, style["speed"], "whisper" if whisper else None,
+                ))
+    return segments, not segments
+
+
+def _instruct_with_whisper(instruct):
+    """Add the inline whisper style without duplicating an existing tag."""
+    if instruct and any(
+        item.strip().casefold() == "whisper"
+        for item in re.split(r"[,，]", instruct)
+    ):
+        return instruct
+    return f"{instruct}, whisper" if instruct else "whisper"
 
 
 def _sanitize_audio(audio_out):
@@ -1226,22 +1287,31 @@ def _run_inference(
 
         from services.tts_backend import generate_with_cached_ref
 
-        def _gen(gen_text, gen_duration):
+        def _gen(gen_text, gen_duration, speed_multiplier=None, span_instruct=None):
             """One generate call for this request's voice, reference encoded once."""
+            instruct_text = instruct
+            if span_instruct == "whisper":
+                instruct_text = _instruct_with_whisper(instruct)
             return trace_call("synthesis", generate_with_cached_ref,
                 model, ref_audio=ref_audio_path, ref_text=ref_text,
-                text=gen_text, language=language, instruct=instruct,
+                text=gen_text, language=language, instruct=instruct_text,
                 duration=gen_duration, num_step=num_step,
-                guidance_scale=guidance_scale, speed=speed, denoise=denoise,
+                guidance_scale=guidance_scale,
+                speed=speed if speed_multiplier is None else speed * speed_multiplier,
+                denoise=denoise,
                 postprocess_output=postprocess_output, **kwargs
             )
 
         # Inline [pause Nms] markers (issue #276): split the text and stitch
         # silence between independently-synthesized spans. Fully opt-in — text
         # without a marker takes the unchanged single-shot path below.
-        from omnivoice.utils.text import parse_pause_markers
-        segments = parse_pause_markers(text)
-        has_pause = len(segments) > 1 or (segments and segments[0][1] > 0)
+        segments, empty_markup = _parse_inline_prosody(text, allow_whisper=True)
+        has_pause = (
+            empty_markup
+            or len(segments) > 1
+            or any(pause > 0 or multiplier is not None or style is not None
+                   for _, pause, multiplier, style in segments)
+        )
 
         from services.chunked_tts import (
             DEFAULT_CROSSFADE_MS, DEFAULT_MAX_CHUNK_CHARS,
@@ -1251,13 +1321,15 @@ def _run_inference(
         _xfade_ms = DEFAULT_CROSSFADE_MS if crossfade_ms is None else crossfade_ms
 
         if has_pause:
-            def _gen_span(span_text, chunk_index=None):
+            def _gen_span(
+                span_text, chunk_index=None, speed_multiplier=None, span_instruct=None
+            ):
                 # Per-span duration is left to the model; an explicit overall
                 # `duration` can't be meaningfully split across spans. Chunks
                 # of a long span get the no-pause path's per-chunk seed.
                 if chunk_index is not None and used_seed is not None:
                     torch.manual_seed(used_seed + chunk_index)
-                return _gen(span_text, None)[0]
+                return _gen(span_text, None, speed_multiplier, span_instruct)[0]
             audio_out = _render_with_pauses(
                 _gen_span, segments, sr, trim_spans=_wants_edge_trim(effect_preset),
                 max_chunk_chars=_max_chars, crossfade_ms=_xfade_ms, dropped_sink=dropped_sink)
@@ -1357,9 +1429,15 @@ def _run_backend_inference(
 
         # Inline [pause Nms] markers (issue #276) work for every engine — the
         # silence stitching is model-free.
-        from omnivoice.utils.text import parse_pause_markers
-        segments = parse_pause_markers(text)
-        has_pause = len(segments) > 1 or (segments and segments[0][1] > 0)
+        segments, empty_markup = _parse_inline_prosody(
+            text, allow_whisper=getattr(backend, "instruct_vocabulary", "freeform") == "tags"
+        )
+        has_pause = (
+            empty_markup
+            or len(segments) > 1
+            or any(pause > 0 or multiplier is not None or style is not None
+                   for _, pause, multiplier, style in segments)
+        )
 
         from services.chunked_tts import (
             DEFAULT_CROSSFADE_MS, DEFAULT_MAX_CHUNK_CHARS,
@@ -1371,12 +1449,20 @@ def _run_backend_inference(
         if has_pause:
             first_span = True
 
-            def _gen_span(span_text, chunk_index=None):
+            def _gen_span(
+                span_text, chunk_index=None, speed_multiplier=None, span_instruct=None
+            ):
                 nonlocal first_span
                 # Per-span duration is left to the engine; an explicit overall
                 # `duration` can't be meaningfully split across spans. Chunks
                 # of a long span get the no-pause path's per-chunk seed.
                 span_kwargs = dict(gen_kwargs)
+                if speed_multiplier is not None:
+                    span_kwargs["speed"] = speed * speed_multiplier
+                if span_instruct == "whisper":
+                    span_kwargs["instruct"] = _instruct_with_whisper(
+                        span_kwargs.get("instruct")
+                    )
                 if chunk_index is not None and used_seed is not None:
                     torch.manual_seed(used_seed + chunk_index)
                     if forwards_seed:

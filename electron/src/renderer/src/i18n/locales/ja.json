@@ -499,7 +499,7 @@
     "steps": "ステップ",
     "voice_source": "音声ソース",
     "reference_audio": "参照音声",
-    "reference_hint": "5～15秒のクリアな音声を使用してください。",
+    "reference_hint": "明瞭な音声を5～15秒使用してください。最長5分の音声をアップロードでき、最適な15秒の箇所が自動選択されます。20秒を超える音声には、インストール済みの音声認識モデルが必要です。",
     "ref_usage_best_window": "このエンジンは最大 {{seconds}} 秒を使用します。最適な区間が自動で選ばれます。",
     "ref_usage_head": "このエンジンはこのクリップの最初の {{seconds}} 秒を使用します。",
     "ref_usage_long": "推奨の {{seconds}} 秒より長いクリップです。クリップ全体がエンジンに送られます。",
@@ -593,6 +593,18 @@
     "dialect_qingdao": "青島方言",
     "dialect_dongbei": "東北方言",
     "style_placeholder": "例:ささやき声",
+    "delivery_prompt": "読み方の指示",
+    "delivery_prompt_placeholder": "例：温かく落ち着いた声で、穏やかな抑揚をつけ、読点で間を置く。",
+    "delivery_prompt_help": "このエンジンは自然な文章による指示に対応しています。声質は引き続き参照音声から反映されます。",
+    "describe_tags_only": "OmniVoiceが受け付けるのは、性別・年齢・声の高さ・ささやき・英語のアクセント・中国語の方言の固定タグのみです。自然文の指示や感情プロンプトには対応していません。プロンプトを使うには自由入力または感情制御対応のエンジンを選んでください。",
+    "reading_cues": "読み方の指定",
+    "cue_slow": "ゆっくり",
+    "cue_fast": "速く",
+    "cue_emphasis": "軽く強調",
+    "cue_pause": "間を置く",
+    "cue_whisper": "ささやき",
+    "reading_cue_help": "[slow]...[/slow] または [fast]...[/fast] で段落の速さを変えます。[emphasis] は少しゆっくりにして強調し、[pause] は無音を挿入します。",
+    "reading_cue_whisper_help": "この部分をささやき声にするには [whisper]...[/whisper] を使います。",
     "stop_playback": "再生を停止",
     "describe_label": "声を言葉で説明",
     "describe_placeholder": "例: a warm elderly British storyteller, slightly raspy",
@@ -704,7 +716,6 @@
     "no_video": "ビデオがロードされていません",
     "segments": "セグメント",
     "speakers": "スピーカー",
-    "video_dubbing_studio": "ビデオダビングスタジオ",
     "drop_here": "ここにビデオまたはオーディオをドロップします",
     "paste_url": "…または YouTube / ビデオの URL を貼り付けます",
     "ingest": "摂取する",
@@ -936,7 +947,8 @@
     "segment_count_other": "{{count}} セグメント",
     "glossary_terms_one": "用語集 · {{count}} 語",
     "glossary_terms_other": "用語集 · {{count}} 語",
-    "glossary_label": "用語集"
+    "glossary_label": "用語集",
+   "video_dubbing_studio": "ビデオダビングスタジオ"
   },
   "dub_workflow": {
     "preparing_audio": "オーディオを準備しています…",
@@ -4321,9 +4333,9 @@
       "stems_hint": "元の録音は分離されていません。背景音を分離するにはコンピューターを使用してください。",
       "timing": "タイミング",
       "top": "字幕を上に配置",
-      "video_required": "複数の音声トラックを書き出す前に動画を生成してください。",
       "white": "白",
-      "yellow": "黄"
+      "yellow": "黄",
+     "video_required": "複数の音声トラックを書き出す前に動画を生成してください。"
     },
     "handoff": {
       "title": "プロジェクトの転送とバックアップ",
@@ -4395,12 +4407,12 @@
     "tls_connection_dropped": "安全な接続が切れました。再試行し、繰り返す場合は VPN なしで試してください。",
     "transformers_import": "音声コンポーネントを読み込めませんでした。原因はバックエンドのログで確認できます。",
     "unsupported_video_url": "このリンクは動画ページではありません。動画への直接リンクを貼るか、ファイルをアップロードしてください。",
-    "video_download_bot_check": "YouTube がログイン確認を求めています。吹き替えで cookies.txt のエクスポートを添付するか、ファイルをアップロードしてください。",
-    "video_download_network": "動画のダウンロードが途切れました。再試行し、繰り返す場合はネットワークを確認してください。",
-    "video_download_os_error": "動画を保存できませんでした。空き容量と、データフォルダーに書き込めるかを確認してください。",
-    "video_drm_protected": "この動画は DRM で保護されておりダウンロードできません。後で試すか、ファイルをアップロードしてください。",
     "windows_paging_file_too_small": "このモデルには Windows のページングファイルが足りません。32 GB 以上に設定して再起動するか、小さいエンジンを使ってください。",
-    "windows_untrusted_mount": "信頼されていないドライブ上のフォルダーを Windows がブロックしました。データフォルダーを通常のローカルドライブに移してください。"
+    "windows_untrusted_mount": "信頼されていないドライブ上のフォルダーを Windows がブロックしました。データフォルダーを通常のローカルドライブに移してください。",
+   "video_download_bot_check": "YouTube がログイン確認を求めています。吹き替えで cookies.txt のエクスポートを添付するか、ファイルをアップロードしてください。",
+   "video_download_network": "動画のダウンロードが途切れました。再試行し、繰り返す場合はネットワークを確認してください。",
+   "video_download_os_error": "動画を保存できませんでした。空き容量と、データフォルダーに書き込めるかを確認してください。",
+   "video_drm_protected": "この動画は DRM で保護されておりダウンロードできません。後で試すか、ファイルをアップロードしてください。"
   },
   "failureAction": {
     "add_transcript": "文字起こしを追加",

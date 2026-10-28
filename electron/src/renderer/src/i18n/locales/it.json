@@ -501,7 +501,7 @@
     "steps": "Passi",
     "voice_source": "Sorgente vocale",
     "reference_audio": "Audio di riferimento",
-    "reference_hint": "Usa 5–15 secondi di parlato nitido.",
+    "reference_hint": "Usa 5–15 secondi di parlato nitido. Carica fino a 5 minuti; verrà scelto automaticamente il passaggio migliore di 15 secondi. Per clip oltre 20 secondi serve un modello di riconoscimento vocale installato.",
     "ref_usage_best_window": "Questo motore usa fino a {{seconds}} s: il passaggio migliore viene scelto automaticamente.",
     "ref_usage_head": "Questo motore usa i primi {{seconds}} s di questa clip.",
     "ref_usage_long": "Più lunga dei {{seconds}} s consigliati. L'intera clip viene inviata al motore.",
@@ -595,6 +595,18 @@
     "dialect_qingdao": "Dialetto di Qingdao",
     "dialect_dongbei": "Dialetto del nord-est",
     "style_placeholder": "ad es. sussurrare",
+    "delivery_prompt": "Indicazione di lettura",
+    "delivery_prompt_placeholder": "es. calda e pacata, con leggere variazioni di intonazione e pause alle virgole.",
+    "delivery_prompt_help": "Questo motore supporta indicazioni in linguaggio naturale. L’identità vocale continua a provenire dall’audio di riferimento.",
+    "describe_tags_only": "OmniVoice accetta solo tag predefiniti: genere, età, tono, sussurro, accento inglese o dialetto cinese. Non supporta indicazioni in linguaggio naturale né prompt emotivi. Scegli un motore con testo libero o supporto alle emozioni per usare i prompt.",
+    "reading_cues": "Indicazioni di lettura",
+    "cue_slow": "Lento",
+    "cue_fast": "Veloce",
+    "cue_emphasis": "Enfasi leggera",
+    "cue_pause": "Pausa",
+    "cue_whisper": "Sussurro",
+    "reading_cue_help": "Usa [slow]...[/slow] o [fast]...[/fast] per cambiare il ritmo di un passaggio. [emphasis] rallenta leggermente; [pause] inserisce silenzio.",
+    "reading_cue_whisper_help": "Usa [whisper]...[/whisper] per sussurrare questo passaggio.",
     "stop_playback": "Interrompi riproduzione",
     "describe_label": "Descrivi la tua voce",
     "describe_placeholder": "es. a warm elderly British storyteller, slightly raspy",
@@ -706,7 +718,6 @@
     "no_video": "Nessun video caricato",
     "segments": "segmenti",
     "speakers": "altoparlanti",
-    "video_dubbing_studio": "Studio di doppiaggio video",
     "drop_here": "Rilascia video o audio qui",
     "paste_url": "...o incolla l'URL di YouTube/video",
     "ingest": "Ingerire",
@@ -938,7 +949,8 @@
     "segment_count_other": "{{count}} segmenti",
     "glossary_terms_one": "Glossario · {{count}} termine",
     "glossary_terms_other": "Glossario · {{count}} termini",
-    "glossary_label": "Glossario"
+    "glossary_label": "Glossario",
+   "video_dubbing_studio": "Studio di doppiaggio video"
   },
   "dub_workflow": {
     "preparing_audio": "Preparazione dell'audio…",
@@ -4323,9 +4335,9 @@
       "stems_hint": "La registrazione originale non è separata. Usa il computer per una traccia di sottofondo isolata.",
       "timing": "Sincronizzazione",
       "top": "Posiziona i sottotitoli in alto",
-      "video_required": "Genera un video prima di esportare più tracce audio.",
       "white": "Bianco",
-      "yellow": "Giallo"
+      "yellow": "Giallo",
+     "video_required": "Genera un video prima di esportare più tracce audio."
     },
     "handoff": {
       "title": "Trasferimento e backup dei progetti",
@@ -4397,12 +4409,12 @@
     "tls_connection_dropped": "La connessione sicura si è interrotta. Riprova; se si ripete, prova senza VPN.",
     "transformers_import": "Un componente vocale non si è caricato. Controlla la causa nel log del backend.",
     "unsupported_video_url": "Questo link non è una pagina video. Incolla un link diretto al video o carica il file.",
-    "video_download_bot_check": "YouTube chiede una verifica con accesso. Allega un cookies.txt esportato in Doppiaggio o carica il file.",
-    "video_download_network": "Il download del video si è interrotto. Riprova; se si ripete, controlla la rete.",
-    "video_download_os_error": "Impossibile salvare il video. Controlla lo spazio libero e che la cartella dati sia scrivibile.",
-    "video_drm_protected": "Questo video è protetto da DRM e non può essere scaricato. Riprova più tardi o carica il file.",
     "windows_paging_file_too_small": "Windows richiede un file di paging più grande per questo modello. Impostalo ad almeno 32 GB e riavvia, oppure usa un motore più leggero.",
-    "windows_untrusted_mount": "Windows ha bloccato una cartella su un'unità non attendibile. Sposta la cartella dati su un'unità locale normale."
+    "windows_untrusted_mount": "Windows ha bloccato una cartella su un'unità non attendibile. Sposta la cartella dati su un'unità locale normale.",
+   "video_download_bot_check": "YouTube chiede una verifica con accesso. Allega un cookies.txt esportato in Doppiaggio o carica il file.",
+   "video_download_network": "Il download del video si è interrotto. Riprova; se si ripete, controlla la rete.",
+   "video_download_os_error": "Impossibile salvare il video. Controlla lo spazio libero e che la cartella dati sia scrivibile.",
+   "video_drm_protected": "Questo video è protetto da DRM e non può essere scaricato. Riprova più tardi o carica il file."
   },
   "failureAction": {
     "add_transcript": "Aggiungi trascrizione",
